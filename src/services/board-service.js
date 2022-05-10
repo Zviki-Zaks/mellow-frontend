@@ -98,7 +98,7 @@ function getEmptyBoard() {
         createdBy: userService.getLoggedinUser() || userService.getGuestUser(),
         style: { "bgClr": '', "bgImg": '', },
         labels: [], // when adding custom labels from a component we will add to this, otherwise base colors come from component
-        members: [[
+        members: [
             {
                 "_id": 'u105',
                 "fullname": "Yoni Lazarus",
@@ -117,7 +117,7 @@ function getEmptyBoard() {
                 "username": "Zviki",
                 "imgUrl": "https://res.cloudinary.com/cajan22a/image/upload/v1648369158/WhatsApp_Image_2022-03-27_at_11.17.15_rq2ja9.jpg",
             },
-        ]], // in component, add curr user to list
+        ], // in component, add curr user to list
         groups: [],
         activities: [],
     }

@@ -94,10 +94,6 @@ export default {
     };
   },
   methods: {
-    goToBoard(boardId) {
-      this.$emit("closeCmp");
-      this.$router.push(`/board/${boardId}`);
-    },
     requiredTitle() {
       if (!this.title) this.isRequired = true;
     },
