@@ -153,8 +153,8 @@ textarea {
     padding: 4px 0px;
     height: 100%;
     width: 272px;
-    margin: 2px 8px 8px 4px;
     display: flex;
+    margin: 2px 8px 8px 4px;
     cursor: pointer;
     color: $light-text;
     &:hover {
@@ -200,15 +200,11 @@ textarea {
 
 .middle-group-list {
     flex-shrink: 0;
-    // overflow-x: hidden;
-    // overflow-y: auto;
     padding-bottom: 8px;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    // background-color: #fff;
     border-radius: 3px;
-    // background-color: $card-grey;
     cursor: pointer;
 }
 
