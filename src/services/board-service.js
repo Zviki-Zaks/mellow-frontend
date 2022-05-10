@@ -40,9 +40,10 @@ async function remove(id) {
     // return storageService.remove(KEY, id)
 }
 
-async function save(board) {
+async function save(board, activity) {
     if (board.activities.length <= 30) {
-        board.activities = board.activities.slice(0, 29)
+        board.activities.shift()
+        board.activities.push(activity)
     }
     const updatedBoard = board._id
         ? await httpService.put(`${ENDPOINT}/${board._id}`, board)
