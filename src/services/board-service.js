@@ -41,6 +41,9 @@ async function remove(id) {
 }
 
 async function save(board) {
+    if (board.activities.length <= 30) {
+        board.activities = board.activities.slice(-30)
+    }
     const updatedBoard = board._id
         ? await httpService.put(`${ENDPOINT}/${board._id}`, board)
         : await httpService.post(ENDPOINT, board)
