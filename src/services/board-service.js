@@ -41,8 +41,14 @@ async function remove(id) {
 }
 
 async function save(board, activity) {
-    if (board.activities.length <= 30) {
-        board.activities.shift()
+    if (activity) {
+        activity.id = utilService.makeId()
+        activity.createdAt = Date.now()
+        const user = userService.getLoggedinUser() || userService.getGuestUser()
+        activity.byMember = { _id: user._id, fullname: user.fullname, imgUrl: user.imgUrl }
+        if (board.activities.length >= 30) {
+            board.activities.shift()
+        }
         board.activities.push(activity)
     }
     const updatedBoard = board._id

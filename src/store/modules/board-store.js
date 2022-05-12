@@ -36,37 +36,10 @@ export default {
         setCurrBoard(state, { board }) {
             state.currBoard = JSON.parse(JSON.stringify(board))
         },
-        setFavorite(state, { updatedBoard }) {
-            const boardIdx = state.boards.findIndex(board => board._id === updatedBoard._id)
-            state.boards.splice(boardIdx, 1, updatedBoard)
-        },
         saveBoard(state, { savedBoard }) {
             const idx = state.boards.findIndex(b => b._id === savedBoard._id)
             state.boards.splice(idx, 1, savedBoard)
         },
-        saveGroup(state, { boardId, group }) {
-            const updatingBoard = state.boards.find(b => b._id === boardId)
-            const idx = updatingBoard.groups.findIndex(g => g.id === group.id)
-            if (idx === -1) return updatingBoard.groups.push(group)
-            updatingBoard.groups.splice(idx, 1, group)
-            state.currBoard = updatingBoard
-        },
-        saveTask(state, { boardId, groupId, task }) {
-            const updatingBoard = state.boards.find(b => b._id === boardId)
-            const updatingGroup = updatingBoard.groups.find(g => g.id === groupId)
-            const idx = updatingGroup.tasks.findIndex(t => t.id === task.id)
-            if (idx === -1) return updatingGroup.tasks.push(task)
-            updatingGroup.tasks.splice(idx, 1, task)
-            state.currBoard = updatingBoard
-        },
-        removeTask(state, { board, group, taskIdx }) {
-            group.tasks.splice(taskIdx, 1)
-            state.currBoard = board
-        },
-        removeGroup(state, { board, groupIdx }) {
-            board.groups.splice(groupIdx, 1)
-            state.currBoard = board
-        }
     },
     actions: {
         async loadBoards({ commit }) {
@@ -86,15 +59,20 @@ export default {
                 console.log("board module loadBoard cant load board now", err)
             }
         },
-        async addBoard({ commit }, { title, bgClr, bgImg }) {
+        async addBoard({ dispatch }, { title, bgClr, bgImg }) {
             try {
                 const newBoard = boardService.getEmptyBoard();
                 newBoard.title = title
                 newBoard.style.bgClr = bgClr
                 newBoard.style.bgImg = bgImg
-                const board = await boardService.save(newBoard)
-                commit({ type: "addBoard", board })
-                return board._id
+                const activity = {
+                    txt: 'Add board',
+                };
+                return await dispatch({
+                    type: "saveBoard",
+                    board: JSON.parse(JSON.stringify(boardToUpdate)),
+                    activity: JSON.parse(JSON.stringify(activity)),
+                });
             } catch (err) {
                 console.log("board module addBoard cant load boards now", err)
             }
@@ -107,38 +85,47 @@ export default {
                 console.log("board module removeBoard cant load boards now", err)
             }
         },
-        async removeTask({ commit, state }, { boardId, groupId, task, activity }) {
+        async removeTask({ dispatch, state }, { boardId, groupId, task, changeType }) {
             try {
-                const board = state.boards.find(board => board._id === boardId)
-                const group = board.groups.find(group => group.id === groupId)
+                const boardToUpdate = JSON.parse(JSON.stringify(state.boards.find(b => b._id === boardId)))
+                const group = boardToUpdate.groups.find(group => group.id === groupId)
                 const taskIdx = group.tasks.findIndex(t => t.id === task.id)
-                await commit({ type: 'removeTask', board, group, taskIdx })
-                const updatedBoard = JSON.parse(JSON.stringify(state.currBoard))
-                // updatedBoard.activities.push(activity)
-                const savedBoard = await boardService.save(updatedBoard, activity)
-                commit({ type: 'saveBoard', savedBoard })
-                return JSON.parse(JSON.stringify(savedBoard))
+                group.tasks.splice(taskIdx, 1)
+                const activity = {
+                    txt: changeType,
+                    groupId,
+                    task: { id: task.id, title: task.title },
+                };
+                return await dispatch({
+                    type: "saveBoard",
+                    board: JSON.parse(JSON.stringify(boardToUpdate)),
+                    activity: JSON.parse(JSON.stringify(activity)),
+                });
             } catch (err) {
                 console.log('board module removeTask cant remove task now', err);
             }
         },
-        async removeGroup({ commit, state }, { boardId, groupId, activity }) {
+        async removeGroup({ dispatch, state }, { boardId, groupId }) {
             try {
-                const board = state.boards.find(board => board._id === boardId)
-                const groupIdx = board.groups.findIndex(group => group.id === groupId)
-                await commit({ type: 'removeGroup', board, groupIdx })
-                const updatedBoard = JSON.parse(JSON.stringify(state.currBoard))
-                // updatedBoard.activities.push(activity)
-                const savedBoard = await boardService.save(updatedBoard, activity)
-                commit({ type: 'saveBoard', savedBoard })
-                return JSON.parse(JSON.stringify(savedBoard))
+                const boardToUpdate = JSON.parse(JSON.stringify(state.boards.find(b => b._id === boardId)))
+                const groupIdx = boardToUpdate.groups.findIndex(group => group.id === groupId)
+                boardToUpdate.groups.splice(groupIdx, 1)
+                const activity = {
+                    txt: "remove group",
+                    group: { id: groupId },
+                };
+                return await dispatch({
+                    type: "saveBoard",
+                    board: JSON.parse(JSON.stringify(boardToUpdate)),
+                    activity: JSON.parse(JSON.stringify(activity)),
+                });
             } catch (err) {
                 console.log('board module removeGroup cant remove group now', err);
             }
         },
         async editBoard({ state, dispatch }, { boardId, changeType, val }) {
             try {
-                const boardToUpdate = JSON.parse(JSON.stringify(state.boards.find(board => board._id === boardId)))
+                const boardToUpdate = JSON.parse(JSON.stringify(state.boards.find(b => b._id === boardId)))
                 let change;
                 switch (changeType) {
                     case "bgClr":
@@ -181,16 +168,12 @@ export default {
                         break;
                 }
                 const activity = {
-                    id: utilService.makeId(),
                     txt: (`Change board ${change}`),
-                    createdAt: Date.now(),
-                    byMember:
-                        state.loggedinUser || state.guestUser,
                 };
-                // boardToUpdate.activities.push(activity);
                 return await dispatch({
                     type: "saveBoard",
-                    board: JSON.parse(JSON.stringify(boardToUpdate), activity),
+                    board: JSON.parse(JSON.stringify(boardToUpdate)),
+                    activity: JSON.parse(JSON.stringify(activity)),
                 });
             } catch (err) {
                 console.log("board module editBoard cant edit board now", err)
@@ -201,6 +184,7 @@ export default {
             try {
                 const savedBoard = await boardService.save(board, activity)
                 commit({ type: 'saveBoard', savedBoard })
+                commit({ type: 'setCurrBoard', board: savedBoard })
                 return JSON.parse(JSON.stringify(savedBoard))
             } catch (err) {
                 console.log("board module saveBoard cant save board now", err)
@@ -215,26 +199,42 @@ export default {
                 console.log("board module attachImg cant attach img now", err)
             }
         },
-        async saveTask({ commit, state }, { boardId, groupId, task, activity }) {
+        async saveTask({ dispatch, state }, { boardId, groupId, task, changeType }) {
             try {
-                await commit({ type: 'saveTask', boardId, groupId, task })
-                const updatingBoard = JSON.parse(JSON.stringify(state.currBoard))
-                // updatingBoard.activities.push(activity)
-                const savedBoard = await boardService.save(updatingBoard, activity)
-                commit({ type: 'saveBoard', savedBoard })
-                return JSON.parse(JSON.stringify(savedBoard))
+                const boardToUpdate = JSON.parse(JSON.stringify(state.boards.find(b => b._id === boardId)))
+                const updatingGroup = boardToUpdate.groups.find(g => g.id === groupId)
+                const idx = updatingGroup.tasks.findIndex(t => t.id === task.id)
+                if (idx === -1) updatingGroup.tasks.push(task)
+                else updatingGroup.tasks.splice(idx, 1, task)
+                const activity = {
+                    txt: changeType,
+                    groupId,
+                    task: { id: task.id, title: task.title },
+                };
+                return await dispatch({
+                    type: "saveBoard",
+                    board: JSON.parse(JSON.stringify(boardToUpdate)),
+                    activity: JSON.parse(JSON.stringify(activity)),
+                });
             } catch (err) {
                 console.log("board module saveTask cant save task now", err)
             }
         },
-        async saveGroup({ commit, state }, { boardId, group, activity }) {
+        async saveGroup({ dispatch, state }, { boardId, group, changeType }) {
             try {
-                await commit({ type: 'saveGroup', boardId, group })
-                const updatingBoard = JSON.parse(JSON.stringify(state.currBoard))
-                // updatingBoard.activities.push(activity)
-                const savedBoard = await boardService.save(updatingBoard, activity)
-                commit({ type: 'saveBoard', savedBoard })
-                return JSON.parse(JSON.stringify(savedBoard))
+                const boardToUpdate = JSON.parse(JSON.stringify(state.boards.find(b => b._id === boardId)))
+                const idx = boardToUpdate.groups.findIndex(g => g.id === group.id)
+                if (idx === -1) boardToUpdate.groups.push(group)
+                else boardToUpdate.groups.splice(idx, 1, group)
+                const activity = {
+                    txt: changeType,
+                    group: { id: group.id, title: group.title },
+                };
+                return await dispatch({
+                    type: "saveBoard",
+                    board: JSON.parse(JSON.stringify(boardToUpdate)),
+                    activity: JSON.parse(JSON.stringify(activity)),
+                });
             } catch (err) {
                 console.log("board module saveGroup cant save group now", err)
             }

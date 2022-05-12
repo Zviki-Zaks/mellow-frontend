@@ -25,7 +25,9 @@
           <span class="trello-icon"></span>
           <div>
             <p class="menu-option-about">About this board</p>
-            <p class="menu-option-about-description">Add description to your board</p>
+            <p class="menu-option-about-description">
+              Add description to your board
+            </p>
           </div>
         </div>
         <div class="menu-option" @click="toggleMenuContent('isChangeBg')">
@@ -35,12 +37,17 @@
         <hr class="thin-hr" />
       </div>
 
-      <section v-if="!handles.isAbout && !handles.isChangeBg" class="menu-activities-container">
+      <section
+        v-if="!handles.isAbout && !handles.isChangeBg"
+        class="menu-activities-container"
+      >
         <p
           v-if="!handles.isShowActivities"
           class="activity-header"
           @click="toggleMenuContent('isShowActivities')"
-        >Activity</p>
+        >
+          Activity
+        </p>
         <div class="activities-list">
           <activity-preview
             v-for="activity in activitiesToDisplay"
@@ -52,16 +59,26 @@
           v-if="!handles.isShowActivities"
           class="show-allActivities"
           @click="toggleMenuContent('isShowActivities')"
-        >View all activity</a>
+          >View all activity</a
+        >
       </section>
       <section v-if="handles.isChangeBg" class="change-bg-container">
-        <div v-if="!bgOptions.isChangClr && !bgOptions.isChangImg" class="change-bg-choose">
+        <div
+          v-if="!bgOptions.isChangClr && !bgOptions.isChangImg"
+          class="change-bg-choose"
+        >
           <div class="photos-colors-options flex">
-            <div class="photos-option-container" @click="toggleBgOption('isChangImg')">
+            <div
+              class="photos-option-container"
+              @click="toggleBgOption('isChangImg')"
+            >
               <img class="photos-option" src="../assets/imgs/photos.jpg" />
               <p class="photos-option-title">Photos</p>
             </div>
-            <div class="colors-option-container" @click="toggleBgOption('isChangClr')">
+            <div
+              class="colors-option-container"
+              @click="toggleBgOption('isChangClr')"
+            >
               <img class="colors-option" src="../assets/imgs/colors.jpg" />
               <p class="color-option-title">Colors</p>
             </div>
@@ -115,7 +132,6 @@
           </div>
         </div>
       </section>
-      <!-- <cover-unsplash v-if="handles.isChangeBg" /> -->
     </section>
   </section>
 </template>
@@ -125,7 +141,6 @@ import activityPreview from "./activity-preview.vue";
 import listSlot from "./list-slot.vue";
 import axios from "axios";
 import _ from "lodash";
-// import coverUnsplash from "./cover-unsplash.vue";
 export default {
   props: {
     board: Object,
@@ -240,7 +255,6 @@ export default {
   components: {
     activityPreview,
     listSlot,
-    // coverUnsplash,
   },
 };
 </script>

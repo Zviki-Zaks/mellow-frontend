@@ -1,10 +1,17 @@
 <template>
   <section class="groups-border">
     <div class="outside-group flex">
-      <p class="group-title pointer" contenteditable="true" @blur="saveTitle">{{ group.title }}</p>
+      <p class="group-title pointer" contenteditable="true" @blur="saveTitle">
+        {{ group.title }}
+      </p>
       <span class="remove-group-btn" @click="toggleRemove"></span>
     </div>
-    <delete-cmp v-if="isRemove" :type="'list'" @remove="removeGroup" @closeCmp="toggleRemove" />
+    <delete-cmp
+      v-if="isRemove"
+      :type="'list'"
+      @remove="removeGroup"
+      @closeCmp="toggleRemove"
+    />
     <div class="group-container" ref="list" :class="calcHeight">
       <Container
         class="tasks-container"
@@ -35,13 +42,17 @@
           placeholder="Enter a title for this card..."
         />
         <div class="add-task-buttons-container flex">
-          <button class="adding-task-btn btn" ref="bottom" @click="addTask">Add card</button>
+          <button class="adding-task-btn btn" ref="bottom" @click="addTask">
+            Add card
+          </button>
           <button class="delete-task-btn" @click="clearForm"></button>
         </div>
       </div>
     </div>
     <div class="bottom-outside-group">
-      <div class="add-task-btn" v-if="!isAdding" @click="openAddTask">Add a card</div>
+      <div class="add-task-btn" v-if="!isAdding" @click="openAddTask">
+        Add a card
+      </div>
     </div>
   </section>
 </template>
@@ -114,7 +125,7 @@ export default {
         task.title = this.newTaskTitle;
         this.$emit("saveGroup", {
           groupId: this.group.id,
-          type: "add task",
+          changeType: "add task",
           newValue: task,
         });
         this.clearForm();
@@ -125,7 +136,7 @@ export default {
       if (newTitle === this.group.title) return;
       this.$emit("saveGroup", {
         groupId: this.group.id,
-        type: "save group title",
+        changeType: "save group title",
         newValue: newTitle,
       });
     },

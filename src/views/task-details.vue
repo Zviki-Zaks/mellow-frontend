@@ -201,7 +201,6 @@
               :taskLabelIds="task.labelIds"
               @closeCmp="closeCmp"
               @addLabelToTask="addLabelToTask"
-              @removeLabelFromBoard="removeLabelFromBoard"
               @updateBoardLabels="updateBoardLabels"
             />
             <button
@@ -384,22 +383,14 @@ export default {
       this.closeCmp();
       this.loadTask();
     },
-    async saveTask(type) {
-      const activity = {
-        id: utilService.makeId(),
-        txt: type,
-        groupId: this.currGroup.id,
-        createdAt: Date.now(),
-        byMember:
-          this.$store.getters.loggedinUser || this.$store.getters.getGuestUser,
-        task: { id: this.task.id, title: this.task.title }, // take out details and extract only mini task
-      };
+    async saveTask(changeType) {
       const board = await this.$store.dispatch({
         type: "saveTask",
         boardId: this.currBoard._id,
         groupId: this.currGroup.id,
-        task: this.task,
-        activity,
+        task: JSON.parse(JSON.stringify(this.task)),
+        // activity,
+        changeType,
       });
       this.$emit("updateBoard", board);
     },
@@ -435,6 +426,7 @@ export default {
         changeType: "update labels",
         val,
       });
+      this.currBoard = board;
       await this.$emit("updateBoard", board);
     },
     async toggleMemberInTask(memberToAdd) {
@@ -479,22 +471,13 @@ export default {
       await this.saveTask("Updated cover photo");
       this.loadTask();
     },
-    async removeTask(type) {
-      const activity = {
-        id: utilService.makeId(),
-        txt: type,
-        groupId: this.currGroup.id,
-        createdAt: Date.now(),
-        byMember:
-          this.$store.getters.loggedinUser || this.$store.getters.getGuestUser,
-        task: { id: this.task.id, title: this.task.title }, // take out details and extract only mini task
-      };
+    async removeTask(changeType) {
       const board = await this.$store.dispatch({
         type: "removeTask",
         boardId: this.currBoard._id,
         groupId: this.currGroup.id,
         task: this.task,
-        activity,
+        changeType,
       });
       this.$emit("updateBoard", board);
       this.moveToBoard();

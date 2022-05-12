@@ -19,10 +19,7 @@ export default {
     },
     mutations: {
         setLoggedinUser(state, { user }) {
-
-            // Yaron: needed this workaround as for score not reactive from birth
             state.loggedinUser = (user) ? { ...user } : null;
-            console.log('in mutation, ', state.loggedinUser);
         },
         setWatchedUser(state, { user }) {
             state.watchedUser = user;

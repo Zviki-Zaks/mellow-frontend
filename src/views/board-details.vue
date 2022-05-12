@@ -146,7 +146,7 @@ export default {
     onDrop(ev) {
       const group = this.board.groups.splice(ev.removedIndex, 1)[0];
       this.board.groups.splice(ev.addedIndex, 0, group);
-      this.saveBoard();
+      this.saveDnd();
     },
     dropCard({ ev, groupToId }) {
       this.dndInfo.groupFromId = ev.payload; // groupFrom is always correct, update immediately
@@ -179,25 +179,14 @@ export default {
         1
       )[0];
       toGroup.tasks.splice(this.dndInfo.addedIndex, 0, cardToMove);
-      this.saveBoard();
+      this.saveDnd();
       this.dndInfo = {};
     },
 
     async loadBoard(boardId) {
       this.board = await this.$store.dispatch({ type: "loadBoard", boardId });
     },
-    async saveBoard(type) {
-      if (type) {
-        const activity = {
-          id: utilService.makeId(),
-          txt: type,
-          createdAt: Date.now(),
-          byMember:
-            this.$store.getters.loggedinUser ||
-            this.$store.getters.getGuestUser,
-        };
-        this.board.activities.push(activity);
-      }
+    async saveDnd() {
       this.board = await this.$store.dispatch({
         type: "saveBoard",
         board: JSON.parse(JSON.stringify(this.board)),
@@ -222,14 +211,18 @@ export default {
     },
     async addGroup() {
       const newGroup = boardService.getEmptyGroup();
-      this.board.groups.push(newGroup);
-      this.saveBoard("Added a new group");
+      this.board = await this.$store.dispatch({
+        type: "saveGroup",
+        boardId: this.board._id,
+        group: newGroup,
+        changeType: "Added a new group",
+      });
     },
-    async saveGroup({ groupId, type, newValue }) {
+    async saveGroup({ groupId, changeType, newValue }) {
       const updatingGroup = JSON.parse(
         JSON.stringify(this.board.groups.find((group) => group.id === groupId))
       );
-      switch (type) {
+      switch (changeType) {
         case "save group title":
           updatingGroup.title = newValue;
           break;
@@ -237,35 +230,18 @@ export default {
           updatingGroup.tasks.push(newValue);
           break;
       }
-      const activity = {
-        id: utilService.makeId(),
-        txt: type,
-        createdAt: Date.now(),
-        byMember:
-          this.$store.getters.loggedinUser || this.$store.getters.getGuestUser,
-        group: { id: updatingGroup.id, title: updatingGroup.title }, // take out details and extract only mini task
-      };
       this.board = await this.$store.dispatch({
         type: "saveGroup",
         boardId: this.board._id,
         group: updatingGroup,
-        activity,
+        changeType,
       });
     },
     async removeGroup(groupId) {
-      const activity = {
-        id: utilService.makeId(),
-        txt: "remove group",
-        createdAt: Date.now(),
-        byMember:
-          this.$store.getters.loggedinUser || this.$store.getters.getGuestUser,
-        group: { id: groupId },
-      };
       this.board = await this.$store.dispatch({
         type: "removeGroup",
         boardId: this.board._id,
         groupId,
-        activity,
       });
     },
     toggleLabelTitle() {
@@ -281,7 +257,9 @@ export default {
       this.loadBoard(this.board._id);
     },
     toggleMenu() {
+      console.log("toggle");
       this.isOpenMenu = !this.isOpenMenu;
+      console.log("this.isOpenMenu", this.isOpenMenu);
     },
     moveToDashboard(boardId) {
       this.$router.push(`/${boardId}/dashboard`);
