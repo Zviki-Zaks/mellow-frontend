@@ -4,7 +4,7 @@
 
 I created it with my team in 10 intense days.
 
-**Vue.js** **Vuex** **Sacc**
+**Vue.js** | **Vuex** | **Sacc**
 
 The backend repo: [Mellow-Backend](https://github.com/Zviki-Zaks/mellow-backend)
 
