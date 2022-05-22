@@ -1,8 +1,8 @@
 # Mellow
 
-<h3>Mellow - Final project of coding academy bootcamp - trello.com-mock</h3>
+<h3>Mellow - Final project of coding academy bootcamp - trello.com-clone</h3>
 
-I created it with my team in 10 intense days.
+This app wase built in 10 intense days, by team of 3 developers.
 
 **Vue.js** | **Vuex** | **Sacc**
 
