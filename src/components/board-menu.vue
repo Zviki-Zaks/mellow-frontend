@@ -1,95 +1,99 @@
 <template>
-  <section class="board-menu">
-    <div class="cmp-header">
-      <a v-if="handles.isAbout || handles.isChangeBg || handles.isShowActivities" class="back-to-cmp-btn"
-        @click="toggleMenuContent">
-        <span></span>
-      </a>
-      <p class="cmp-container-title">{{ cmpTitle }}</p>
-      <a class="close-cmp-btn" @click="$emit('closeCmp')">
-        <span></span>
-      </a>
-    </div>
-    <hr class="thin-hr" />
-    <section class="menu-content">
-      <div v-if="
-        !handles.isAbout && !handles.isChangeBg && !handles.isShowActivities
-      " class="menu-options flex">
-        <div class="menu-option" @click="toggleMenuContent('isAbout')">
-          <span class="trello-icon"></span>
-          <div>
-            <p class="menu-option-about">About this board</p>
-            <p class="menu-option-about-description">
-              Add description to your board
-            </p>
-          </div>
-        </div>
-        <div class="menu-option" @click="toggleMenuContent('isChangeBg')">
-          <img class="board-bg-preview" src="../assets/imgs/board.jpg" />
-          <p class="menu-option-bgc">Change background</p>
-        </div>
-        <hr class="thin-hr" />
+  <backdrop @click="$emit('closeCmp')">
+    <section class="board-menu" @click.stop>
+      <div class="cmp-header">
+        <a v-if="handles.isAbout || handles.isChangeBg || handles.isShowActivities" class="back-to-cmp-btn"
+          @click="toggleMenuContent">
+          <span></span>
+        </a>
+        <p class="cmp-container-title">{{ cmpTitle }}</p>
+        <a class="close-cmp-btn" @click="$emit('closeCmp')">
+          <span></span>
+        </a>
       </div>
-
-      <section v-if="!handles.isAbout && !handles.isChangeBg" class="menu-activities-container">
-        <p v-if="!handles.isShowActivities" class="activity-header" @click="toggleMenuContent('isShowActivities')">
-          Activity
-        </p>
-        <div class="activities-list">
-          <activity-preview v-for="activity in activitiesToDisplay" :key="activity.id" :activity="activity" />
-        </div>
-        <a v-if="!handles.isShowActivities" class="show-allActivities"
-          @click="toggleMenuContent('isShowActivities')">View all activity</a>
-      </section>
-      <section v-if="handles.isChangeBg" class="change-bg-container">
-        <div v-if="!bgOptions.isChangClr && !bgOptions.isChangImg" class="change-bg-choose">
-          <div class="photos-colors-options flex">
-            <div class="photos-option-container" @click="toggleBgOption('isChangImg')">
-              <img class="photos-option" src="../assets/imgs/photos.jpg" />
-              <p class="photos-option-title">Photos</p>
+      <hr class="thin-hr" />
+      <section class="menu-content">
+        <div v-if="
+          !handles.isAbout && !handles.isChangeBg && !handles.isShowActivities
+        " class="menu-options flex">
+          <div class="menu-option" @click="toggleMenuContent('isAbout')">
+            <span class="trello-icon"></span>
+            <div>
+              <p class="menu-option-about">About this board</p>
+              <p class="menu-option-about-description">
+                Add description to your board
+              </p>
             </div>
-            <div class="colors-option-container" @click="toggleBgOption('isChangClr')">
-              <img class="colors-option" src="../assets/imgs/colors.jpg" />
-              <p class="color-option-title">Colors</p>
-            </div>
+          </div>
+          <div class="menu-option" @click="toggleMenuContent('isChangeBg')">
+            <img class="board-bg-preview" src="../assets/imgs/board.jpg" />
+            <p class="menu-option-bgc">Change background</p>
           </div>
           <hr class="thin-hr" />
-          <p class="custom-option-title">Custom</p>
-          <div class="customs-container flex">
-            <label class="custom-input-label">
-              <input type="file" @change="onAttachImg" hidden />
-              <div class="custom-option">
-                <span></span>
-              </div>
-            </label>
-          </div>
         </div>
-        <div class="options-list">
-          <list-slot v-if="bgOptions.isChangClr">
-            <template v-slot:list>
-              <div v-for="bgc in bgColors" :key="bgc.id" class="colors-option" :style="{ backgroundColor: bgc.color }"
-                @click="selectBg('bgClr', bgc.color)"></div>
-            </template>
-          </list-slot>
-          <div v-if="bgOptions.isChangImg" class="change-bg-img-screen">
-            <input type="text" placeholder="Search Unsplash for photos" class="unsplash-search" v-focus v-model="search"
-              @input="waitSearch" />
-            <list-slot>
-              <template #list>
-                <img v-for="(photo, idx) in photos" :key="idx" class="photos-option" :src="photo.urls.thumb" alt="img"
-                  @click="selectBg('bgImg', photo)" />
+
+        <section v-if="!handles.isAbout && !handles.isChangeBg" class="menu-activities-container">
+          <p v-if="!handles.isShowActivities" class="activity-header" @click="toggleMenuContent('isShowActivities')">
+            Activity
+          </p>
+          <div class="activities-list">
+            <activity-preview v-for="activity in activitiesToDisplay" :key="activity.id" :activity="activity" />
+          </div>
+          <a v-if="!handles.isShowActivities" class="show-allActivities"
+            @click="toggleMenuContent('isShowActivities')">View all activity</a>
+        </section>
+        <section v-if="handles.isChangeBg" class="change-bg-container">
+          <div v-if="!bgOptions.isChangClr && !bgOptions.isChangImg" class="change-bg-choose">
+            <div class="photos-colors-options flex">
+              <div class="photos-option-container" @click="toggleBgOption('isChangImg')">
+                <img class="photos-option" src="../assets/imgs/photos.jpg" />
+                <p class="photos-option-title">Photos</p>
+              </div>
+              <div class="colors-option-container" @click="toggleBgOption('isChangClr')">
+                <img class="colors-option" src="../assets/imgs/colors.jpg" />
+                <p class="color-option-title">Colors</p>
+              </div>
+            </div>
+            <hr class="thin-hr" />
+            <p class="custom-option-title">Custom</p>
+            <div class="customs-container flex">
+              <label class="custom-input-label">
+                <input type="file" @change="onAttachImg" hidden />
+                <div class="custom-option">
+                  <span></span>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="options-list">
+            <list-slot v-if="bgOptions.isChangClr">
+              <template v-slot:list>
+                <div v-for="bgc in bgColors" :key="bgc.id" class="colors-option" :style="{ backgroundColor: bgc.color }"
+                  @click="selectBg('bgClr', bgc.color)"></div>
               </template>
             </list-slot>
+            <div v-if="bgOptions.isChangImg" class="change-bg-img-screen">
+              <input type="text" placeholder="Search Unsplash for photos" class="unsplash-search" v-focus
+                v-model="search" @input="waitSearch" />
+              <list-slot>
+                <template #list>
+                  <img v-for="(photo, idx) in photos" :key="idx" class="photos-option" :src="photo.urls.thumb" alt="img"
+                    @click="selectBg('bgImg', photo)" />
+                </template>
+              </list-slot>
+            </div>
           </div>
-        </div>
+        </section>
       </section>
     </section>
-  </section>
+  </backdrop>
 </template>
 
 <script>
 import activityPreview from "./activity-preview.vue";
 import listSlot from "./list-slot.vue";
+import backdrop from "./common/backdrop.vue";
+
 import axios from "axios";
 import _ from "lodash";
 export default {
@@ -171,7 +175,6 @@ export default {
       }
     },
     selectBg(type, val) {
-      // this.board.style[type] = val;
       this.$emit("editBoard", type, val);
     },
     async onAttachImg(ev) {
@@ -203,6 +206,7 @@ export default {
   components: {
     activityPreview,
     listSlot,
+    backdrop
   },
 };
 </script>

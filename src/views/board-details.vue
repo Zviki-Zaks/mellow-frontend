@@ -24,11 +24,10 @@
           @addMemberToBoard="editBoard" />
       </div>
       <nav class="board-header-nav flex">
-        <!-- <button class="filter-btn btn-board btn" @click="moveToDashboard(board._id)">dashboard</button> -->
-        <button class="filter-btn btn-board btn" @click="toggleFilter">
+        <!-- <button class="filter-btn btn-board btn" @click="toggleFilter">
           Filter
         </button>
-        <board-filter v-if="isOpenFilter" :board="board" @closeCmp="toggleFilter" @setFilter="setFilter" />
+        <board-filter v-if="isOpenFilter" :board="board" @closeCmp="toggleFilter" @setFilter="setFilter" /> -->
         <button class="show-menu-btn btn-board btn" @click="toggleMenu">
           Show menu
         </button>
