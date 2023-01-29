@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import createBoard from "../components/create-board.vue";
+import createBoard from "../components/common/create-board.vue";
 
 export default {
   name: "work-space",

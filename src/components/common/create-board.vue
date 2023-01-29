@@ -1,48 +1,51 @@
 <template>
-  <section class="create-board">
-    <div class="cmp-header">
-      <p class="cmp-container-title">Create board</p>
-      <a class="close-cmp-btn" @click="$emit('closeCmp')">
-        <span></span>
-      </a>
-    </div>
-    <hr class="thin-hr" />
-    <div class="choose-bg-container">
-      <p class="choose-bg-title">Background</p>
-      <div class="bg-preview" :style="{
-        backgroundColor: selectedBg,
-        backgroundImage: 'url(' + selectedBg + ')',
-      }">
-        <img class="bg-preview-img" src="../assets/svgs/groups.svg" />
+  <backdrop @click="$emit('closeCmp')">
+    <section class="create-board" @click.stop>
+      <div class="cmp-header">
+        <p class="cmp-container-title">Create board</p>
+        <a class="close-cmp-btn" @click="$emit('closeCmp')">
+          <span></span>
+        </a>
       </div>
-      <list-slot>
-        <template v-slot:list>
-          <img v-for="(photo, idx) in photos" :key="idx" class="unsplash-result-small" :src="photo" alt="img"
-            @click="selectBg('bgImg', photo)" />
-        </template>
-      </list-slot>
-      <list-slot>
-        <template v-slot:list>
-          <div v-for="bgc in bgColors" :key="bgc.id" class="label-option flex pointer"
-            :style="{ backgroundColor: bgc.color }" @click="selectBg('bgClr', bgc.color)"></div>
-        </template></list-slot>
-    </div>
-    <div class="add-title-container">
-      <p class="add-title-title">Board title</p>
-      <input class="add-title-input" :class="required" type="text" v-model="title" v-focus placeholder="Enter title.."
-        @blur="requiredTitle" @focus="isRequired = false" />
-      <p v-if="isRequired" class="add-title-required">
-        👋 Board title is required
-      </p>
-    </div>
-    <button class="create-board-btn" @click="addBoard" :disabled="!title">
-      Create
-    </button>
-  </section>
+      <hr class="thin-hr" />
+      <div class="choose-bg-container">
+        <p class="choose-bg-title">Background</p>
+        <div class="bg-preview" :style="{
+          backgroundColor: selectedBg,
+          backgroundImage: 'url(' + selectedBg + ')',
+        }">
+          <img class="bg-preview-img" src="../../assets/svgs/groups.svg" />
+        </div>
+        <list-slot>
+          <template v-slot:list>
+            <img v-for="(photo, idx) in photos" :key="idx" class="unsplash-result-small" :src="photo" alt="img"
+              @click="selectBg('bgImg', photo)" />
+          </template>
+        </list-slot>
+        <list-slot>
+          <template v-slot:list>
+            <div v-for="bgc in bgColors" :key="bgc.id" class="label-option flex pointer"
+              :style="{ backgroundColor: bgc.color }" @click="selectBg('bgClr', bgc.color)"></div>
+          </template></list-slot>
+      </div>
+      <div class="add-title-container">
+        <p class="add-title-title">Board title</p>
+        <input class="add-title-input" :class="required" type="text" v-model="title" v-focus placeholder="Enter title.."
+          @blur="requiredTitle" @focus="isRequired = false" />
+        <p v-if="isRequired" class="add-title-required">
+          👋 Board title is required
+        </p>
+      </div>
+      <button class="create-board-btn" @click="addBoard" :disabled="!title">
+        Create
+      </button>
+    </section>
+  </backdrop>
 </template>
 
 <script>
-import listSlot from "../components/list-slot.vue";
+import listSlot from "../list-slot.vue";
+import backdrop from "./backdrop.vue"
 
 export default {
   data() {
@@ -99,6 +102,7 @@ export default {
   },
   components: {
     listSlot,
+    backdrop
   },
 };
 </script>

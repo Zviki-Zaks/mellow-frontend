@@ -74,7 +74,6 @@ export default {
     },
     loginGuest({ commit }) {
       const user = userService.getGuestUser();
-      console.log("guestUser", user);
       commit({ type: "setLoggedinUser", user });
     },
     async loadUsers({ commit }) {

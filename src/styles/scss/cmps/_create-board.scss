@@ -6,6 +6,7 @@
     border-radius: 3px;
     position: absolute;
     top: 46px;
+    left: 165px;
     padding: 0 12px 12px 12px;
     z-index: 10;
     box-shadow: 0 8px 16px -4px rgb(9 30 66 / 25%), 0 0 0 1px rgb(9 30 66 / 8%);
@@ -66,7 +67,8 @@
 
     .add-title-container {
         .add-title-input {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+                "Helvetica Neue", sans-serif;
             height: 36px;
             background-color: #fafbfc;
             border: none;
@@ -97,7 +99,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+            "Helvetica Neue", sans-serif;
         margin-block-start: 14px;
         padding: 6px 24px;
         background-color: $trello-blue;

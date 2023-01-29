@@ -2,33 +2,35 @@
   <header class="app-header-container" :class="bgc">
     <div class="app-header-inner flex">
       <router-link class="logo-link flex" to="/">
-        <img class="logo-img" src="../assets/svgs/trello.svg" alt />
+        <img class="logo-img" src="../../assets/svgs/trello.svg" alt />
         <h3 class="logo">Mellow</h3>
       </router-link>
       <nav class="app-header-nav flex">
         <div class="app-header-left-nav flex">
-          <button class="btn-header flex" @click="$router.push('/board')">
+          <button v-if="!isHome && !isLogin && !isBoards" class="btn-header flex" @click="$router.push('/board')">
             Workspace
-            <span class="header-arrow-icon"></span>
           </button>
-          <button class="btn-header recent flex" @click="openCmp('isRecent')">
+          <button v-if="!isHome && !isLogin" class="btn-header recent flex" @click="openCmp('isRecent')">
             Recent
             <span class="header-arrow-icon"></span>
           </button>
           <board-recent v-if="handles.isRecent" @closeCmp="openCmp" />
-          <button class="btn-header create flex" @click="openCmp('isCreateBoard')">
+          <button v-if="!isHome && !isLogin" class="btn-header create flex" @click="openCmp('isCreateBoard')">
             Create
             <span v-if="handles.isCreateBoard" class="header-arrow-icon"></span>
           </button>
           <create-board v-if="handles.isCreateBoard" @closeCmp="openCmp" />
         </div>
         <div class="app-header-right-nav flex">
-          <router-link v-if="!userIsLoggedIn" class="login-btn" @click="isLogin = true" to="/login">Log in</router-link>
-          <router-link v-if="!userIsLoggedIn" class="signup-btn" @click="isLogin = true" to="/login">Sign
-            up</router-link>
-          <router-link to="/login" class="header-bell pointer">
-            <img src="../assets/svgs/bell.svg" />
-          </router-link>
+          <template v-if="!userIsLoggedIn && !isLogin">
+            <router-link class="login-btn" to="/login">Log
+              in</router-link>
+            <router-link class="signup-btn" to="/login">Sign
+              up</router-link>
+          </template>
+          <button class="header-bell not-clickable">
+            <img src="../../assets/svgs/bell.svg" />
+          </button>
           <router-link to="/login" class="avatar-login-link">
             <user-avatar class="pointer" v-if="currLoggedInUser" :user="currLoggedInUser" />
           </router-link>
@@ -41,7 +43,7 @@
 <script>
 import boardRecent from "./board-recent.vue";
 import createBoard from "./create-board.vue";
-import userAvatar from "./user-avatar.vue";
+import userAvatar from "../user-avatar.vue";
 
 export default {
   data() {
@@ -50,9 +52,9 @@ export default {
         isRecent: false,
         isCreateBoard: false,
       },
-      isBlue: false,
+      isHome: true,
+      isBoards: false,
       isLogin: false,
-
     };
   },
   methods: {
@@ -75,7 +77,7 @@ export default {
   },
   computed: {
     bgc() {
-      return { blue: this.isBlue };
+      return { blue: this.isBoards || this.isLogin };
     },
     currLoggedInUser() {
       const currUser = this.$store.getters.loggedinUser
@@ -92,15 +94,25 @@ export default {
       immediate: true,
       handler() {
         const path = this.$route.path;
-        if (path === "/board" || path === "/login") {
-          this.isBlue = true;
-        } else this.isBlue = false;
-        if (path !== "/" && path !== "/login") {
+        if (path === "/") {
+          this.isHome = true;
+        } else {
+          this.isHome = false
         }
+        if (path === "/login") {
+          this.isLogin = true;
+        } else {
+          this.isLogin = false
+        }
+        if (path === "/board") {
+          this.isBoards = true;
+        } else {
+          this.isBoards = false;
+        }
+
       },
     },
   },
-
   components: {
     boardRecent,
     createBoard,
