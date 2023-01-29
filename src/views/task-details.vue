@@ -132,7 +132,6 @@
             <button @click.stop="openCmp('isCover')" class="cover-btn btn font-cmp-btn" title="Cover">
               Cover
             </button>
-
             <cover-unsplash v-if="handles.isCover" :style="task.style" :title="task.title"
               :attachments="task.attachments" @closeCmp="closeCmp" @addStyle="addStyle" />
           </div>

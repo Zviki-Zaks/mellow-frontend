@@ -1,4 +1,3 @@
-
 <template>
   <section class="login-page">
     <h1 class="login-logo-header">
@@ -9,17 +8,17 @@
     <div class="main-login-container">
       <p class="login-welcome-msg">Log in to Mellow</p>
 
-      <button class="log-out-button" v-if="loggedinUser" @click="doLogout">
-        Logout {{ loggedinUser.username }}
+      <button class="log-out-button pointer" v-if="loggedinUser" @click="doLogout">
+        Log Out {{ loggedinUser.username }}
       </button>
       <section class="login-form-container" v-else>
         <form class="sign-in-form" v-if="isSignIn" @submit.prevent="doLogin">
           <input class="login-form-input" type="text" v-model="loginCred.username" placeholder="Enter username" />
           <input class="login-form-input" type="password" v-model="loginCred.password" placeholder="Enter password" />
-          <button class="login-button">Log In</button>
+          <button class="login-button pointer">Log In</button>
           <div class="or-div">OR</div>
-          <button class="login-button guest" @click="guestLogin">
-            Login as Guest
+          <button class="login-button guest pointer" @click="guestLogin">
+            Log In as Guest
           </button>
         </form>
 
@@ -28,13 +27,13 @@
             placeholder="Enter your full name" />
           <input class="login-form-input" type="text" v-model="signupCred.username" placeholder="Enter username" />
           <input class="login-form-input" type="password" v-model="signupCred.password" placeholder="Enter password" />
-          <button class="login-button">Login</button>
+          <button class="login-button pointer">Log In</button>
         </form>
         <hr class="thin-hr" />
         <div class="signup-select-container">
-          <a class="sign-up-toggle" @click="toggleLoginSignUp"> Can't log in?</a>
+          <a class="sign-up-toggle pointer" @click="toggleLoginSignUp"> Can't log in?</a>
           <span class="trello-dot"></span>
-          <a class="sign-up-toggle" @click="toggleLoginSignUp">{{
+          <a class="sign-up-toggle pointer" @click="toggleLoginSignUp">{{
             loginSignUpButton
           }}</a>
         </div>
@@ -114,8 +113,7 @@ export default {
     async guestLogin() {
       try {
         await this.$store.dispatch({
-          type: "login",
-          userCred: { username: "Guest", password: "123" },
+          type: "loginGuest",
         });
         this.$router.push("/board");
       } catch (err) {

@@ -1,105 +1,109 @@
 <template>
-  <section class="cmp-preview cover-unsplash-preview">
-    <div class="cmp-header">
-      <a class="back-to-cmp-btn" v-if="searchingUnsplash" @click="(searchingUnsplash = false), (searchResults = false)">
-        <span></span>
-      </a>
-      <p class="cmp-container-title">{{ pageTitle }}</p>
-      <a class="close-cmp-btn" @click="closeCmp">
-        <span></span>
-      </a>
-    </div>
-    <hr class="thin-hr" />
-
-    <section v-if="!searchingUnsplash" class="main-cover-screen">
-      <p class="labels-title">Size</p>
-      <div class="cover-size-select">
-        <button class="coverSelect pointer" @click="setFullCover(false)">
-          <img v-if="currCoverImg" class="coverSelectImg top" :src="currCoverImg" alt />
-          <div v-if="currCoverBg" class="coverSelectImg top" :style="currCoverBg"></div>
-          <div class="over-full-cover-select"></div>
-          <div class="dummy title"></div>
-          <div class="dummy text"></div>
-        </button>
-
-        <button class="coverSelect pointer" @click="setFullCover(true)">
-          <img v-if="currCoverImg" class="coverSelectImg" :src="currCoverImg" alt />
-          <div v-if="currCoverBg" class="coverSelectImg" :style="currCoverBg"></div>
-          <div class="over-full-cover-select"></div>
-          <div class="dummy title"></div>
-          <div class="dummy text"></div>
-        </button>
+  <backdrop @click="closeCmp">
+    <section class="cmp-preview cover-unsplash-preview" @click.stop>
+      <div class="cmp-header">
+        <a class="back-to-cmp-btn" v-if="searchingUnsplash"
+          @click="(searchingUnsplash = false), (searchResults = false)">
+          <span></span>
+        </a>
+        <p class="cmp-container-title">{{ pageTitle }}</p>
+        <a class="close-cmp-btn" @click="closeCmp">
+          <span></span>
+        </a>
       </div>
-      <div v-if="deletable" @click="removeCover" class="unsplash-btn full-width-btn remove-cover pointer">Remove cover
-      </div>
+      <hr class="thin-hr" />
 
-      <list-slot>
-        <template #title>Color</template>
-        <template #list>
-          <div v-for="bgc in bgColors" :key="bgc.id" class="label-option flex pointer"
-            :style="{ backgroundColor: bgc.color }" @click="selectBgClr(bgc.color)"></div>
-        </template>
-      </list-slot>
+      <section v-if="!searchingUnsplash" class="main-cover-screen">
+        <p class="labels-title">Size</p>
+        <div class="cover-size-select">
+          <button class="coverSelect pointer" @click="setFullCover(false)">
+            <img v-if="currCoverImg" class="coverSelectImg top" :src="currCoverImg" alt />
+            <div v-if="currCoverBg" class="coverSelectImg top" :style="currCoverBg"></div>
+            <div class="over-full-cover-select"></div>
+            <div class="dummy title"></div>
+            <div class="dummy text"></div>
+          </button>
 
-      <section>
+          <button class="coverSelect pointer" @click="setFullCover(true)">
+            <img v-if="currCoverImg" class="coverSelectImg" :src="currCoverImg" alt />
+            <div v-if="currCoverBg" class="coverSelectImg" :style="currCoverBg"></div>
+            <div class="over-full-cover-select"></div>
+            <div class="dummy title"></div>
+            <div class="dummy text"></div>
+          </button>
+        </div>
+        <div v-if="deletable" @click="removeCover" class="unsplash-btn full-width-btn remove-cover pointer">Remove cover
+        </div>
+
         <list-slot>
-          <template #title>Attachments</template>
+          <template #title>Color</template>
           <template #list>
-            <img v-for="(photo, idx) in attachments?.slice(0, 6)" :key="idx" class="unsplash-result-small pointer"
-              :src="photo" alt="img" @click="applyPhoto(photo)" />
+            <div v-for="bgc in bgColors" :key="bgc.id" class="label-option flex pointer"
+              :style="{ backgroundColor: bgc.color }" @click="selectBgClr(bgc.color)"></div>
           </template>
         </list-slot>
 
-        <label>
-          <input type="file" @change="onAttachImg" hidden />
-          <div class="unsplash-btn full-width-btn pointer">Upload a cover image</div>
-        </label>
+        <section>
+          <list-slot>
+            <template #title>Attachments</template>
+            <template #list>
+              <img v-for="(photo, idx) in attachments?.slice(0, 6)" :key="idx" class="unsplash-result-small pointer"
+                :src="photo" alt="img" @click="applyPhoto(photo)" />
+            </template>
+          </list-slot>
+
+          <label>
+            <input type="file" @change="onAttachImg" hidden />
+            <div class="unsplash-btn full-width-btn pointer">Upload a cover image</div>
+          </label>
+        </section>
+
+        <list-slot>
+          <template #title>Photos from Unsplash</template>
+          <template #list>
+            <img v-for="photo in photos.slice(0, 6)" :key="photo.id" class="unsplash-result-small pointer"
+              :src="photo.urls.thumb" alt="img" @click="applyPhoto(photo)" />
+          </template>
+        </list-slot>
+
+        <button class="unsplash-btn full-width-btn pointer" @click="searchingUnsplash = true">Search for photos</button>
       </section>
 
-      <list-slot>
-        <template #title>Photos from Unsplash</template>
-        <template #list>
-          <img v-for="photo in photos.slice(0, 6)" :key="photo.id" class="unsplash-result-small pointer"
-            :src="photo.urls.thumb" alt="img" @click="applyPhoto(photo)" />
-        </template>
-      </list-slot>
+      <section v-if="searchingUnsplash && !searchResults" class="search-unsplash-screen">
+        <input type="text" placeholder="Search Unsplash for photos" class="unsplash-search" v-model="search"
+          @input="waitSearch" />
 
-      <button class="unsplash-btn full-width-btn pointer" @click="searchingUnsplash = true">Search for photos</button>
+        <list-slot>
+          <template #title>Suggested searches</template>
+          <template #list>
+            <button class="unsplash-btn pointer" v-for="(term, idx) in searchTerms" :key="idx"
+              @click="searchPhotoWithButton(term)">{{ term }}</button>
+          </template>
+        </list-slot>
+
+        <list-slot>
+          <template #title>Top photos</template>
+          <template #list>
+            <img v-for="photo in photos.slice(0, 12)" :key="photo.id" class="unsplash-result-small pointer"
+              :src="photo.urls.thumb" alt="img" @click="applyPhoto(photo)" />
+          </template>
+        </list-slot>
+      </section>
+
+      <section v-if="searchResults" class="unsplash-results-screen">
+        <list-slot>
+          <template #list>
+            <img v-for="photo in photos" :key="photo.id" class="unsplash-result-large pointer" :src="photo.urls.thumb"
+              alt="img" @click="applyPhoto(photo)" />
+          </template>
+        </list-slot>
+      </section>
     </section>
-
-    <section v-if="searchingUnsplash && !searchResults" class="search-unsplash-screen">
-      <input type="text" placeholder="Search Unsplash for photos" class="unsplash-search" v-model="search"
-        @input="waitSearch" />
-
-      <list-slot>
-        <template #title>Suggested searches</template>
-        <template #list>
-          <button class="unsplash-btn pointer" v-for="(term, idx) in searchTerms" :key="idx"
-            @click="searchPhotoWithButton(term)">{{ term }}</button>
-        </template>
-      </list-slot>
-
-      <list-slot>
-        <template #title>Top photos</template>
-        <template #list>
-          <img v-for="photo in photos.slice(0, 12)" :key="photo.id" class="unsplash-result-small pointer"
-            :src="photo.urls.thumb" alt="img" @click="applyPhoto(photo)" />
-        </template>
-      </list-slot>
-    </section>
-
-    <section v-if="searchResults" class="unsplash-results-screen">
-      <list-slot>
-        <template #list>
-          <img v-for="photo in photos" :key="photo.id" class="unsplash-result-large pointer" :src="photo.urls.thumb"
-            alt="img" @click="applyPhoto(photo)" />
-        </template>
-      </list-slot>
-    </section>
-  </section>
+  </backdrop>
 </template>
 
 <script>
+import backdrop from "./common/backdrop.vue";
 import listSlot from "../components/list-slot.vue";
 import axios from "axios";
 import _ from "lodash";
@@ -108,6 +112,7 @@ export default {
   name: "cover-unsplash",
   components: {
     listSlot,
+    backdrop
   },
   props: {
     style: Object,

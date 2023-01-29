@@ -1,76 +1,80 @@
 <template>
-  <section class="cmp-preview" v-if="!isRemove">
-    <div class="cmp-header">
-      <a class="back-to-cmp-btn" v-if="isCreate || isChange || isRemove"
-        @click="(isCreate = false), (isChange = false)">
-        <span></span>
-      </a>
-      <p class="cmp-container-title">{{ cmpTitle }}</p>
-      <a class="close-cmp-btn" @click="closeCmp">
-        <span></span>
-      </a>
-    </div>
-    <hr class="thin-hr" />
-    <section v-if="!isCreate && !isChange && !isRemove" class="select-label-container">
-      <input class="label-input" type="text" v-model="filterTxt" v-focus placeholder="Search labels.." />
-      <div class="choose-labels-container">
-        <p class="labels-title">Labels</p>
-        <ul class="labels-list flex clean-list">
-          <li class="label-option-container flex" v-for="label in getLabels" :key="label.id">
-            <div class="label-option flex pointer" :style="{ backgroundColor: label.color }"
-              @click="toggleLabel(label.id)">
-              <span class="label-title">{{ label.title }}</span>
-              <span v-if="label.inTask" class="v-icon"></span>
-            </div>
-            <span class="change-label-btn" @click="openCreate(label.id)">
-              <a></a>
-            </span>
-          </li>
-        </ul>
+  <backdrop @click="closeCmp">
+    <section class="cmp-preview" v-if="!isRemove" @click.stop>
+      <div class="cmp-header">
+        <a class="back-to-cmp-btn" v-if="isCreate || isChange || isRemove"
+          @click="(isCreate = false), (isChange = false)">
+          <span></span>
+        </a>
+        <p class="cmp-container-title">{{ cmpTitle }}</p>
+        <a class="close-cmp-btn" @click="closeCmp">
+          <span></span>
+        </a>
       </div>
-      <button class="open-create-label-btn" @click="openCreate">
-        Create a new label
-      </button>
-    </section>
-    <section v-else class="create-label-container">
-      <label>
-        <p class="labels-title">Name</p>
-        <input type="text" class="label-input" v-model="labelToChange.title" v-focus />
-      </label>
+      <hr class="thin-hr" />
+      <section v-if="!isCreate && !isChange && !isRemove" class="select-label-container">
+        <input class="label-input" type="text" v-model="filterTxt" v-focus placeholder="Search labels.." />
+        <div class="choose-labels-container">
+          <p class="labels-title">Labels</p>
+          <ul class="labels-list flex clean-list">
+            <li class="label-option-container flex" v-for="label in getLabels" :key="label.id">
+              <div class="label-option flex pointer" :style="{ backgroundColor: label.color }"
+                @click="toggleLabel(label.id)">
+                <span class="label-title">{{ label.title }}</span>
+                <span v-if="label.inTask" class="v-icon"></span>
+              </div>
+              <span class="change-label-btn" @click="openCreate(label.id)">
+                <a></a>
+              </span>
+            </li>
+          </ul>
+        </div>
+        <button class="open-create-label-btn" @click="openCreate">
+          Create a new label
+        </button>
+      </section>
+      <section v-else class="create-label-container">
+        <label>
+          <p class="labels-title">Name</p>
+          <input type="text" class="label-input" v-model="labelToChange.title" v-focus />
+        </label>
 
-      <list-slot>
-        <template v-slot:title>Select a color</template>
-        <template v-slot:list>
-          <div v-for="label in defaultLabels" :key="label.id" class="label-option flex pointer"
-            :style="{ backgroundColor: label.color }" @click="selectLabel(label.id)">
-            <span v-if="label.isSelected" class="v-icon"></span>
-          </div>
-        </template>
-      </list-slot>
-      <div class="create-label-buttons-container flex">
-        <button class="create-label-btn" @click.stop="changeBoardLabels">
-          {{ createBtn }}
-        </button>
-        <button v-if="isChange" class="delete-label-btn" @click.stop="isRemove = true">
-          Delete
-        </button>
-      </div>
+        <list-slot>
+          <template v-slot:title>Select a color</template>
+          <template v-slot:list>
+            <div v-for="label in defaultLabels" :key="label.id" class="label-option flex pointer"
+              :style="{ backgroundColor: label.color }" @click="selectLabel(label.id)">
+              <span v-if="label.isSelected" class="v-icon"></span>
+            </div>
+          </template>
+        </list-slot>
+        <div class="create-label-buttons-container flex">
+          <button class="create-label-btn" @click.stop="changeBoardLabels">
+            {{ createBtn }}
+          </button>
+          <button v-if="isChange" class="delete-label-btn" @click.stop="isRemove = true">
+            Delete
+          </button>
+        </div>
+      </section>
     </section>
-  </section>
-  <delete-cmp v-else :type="'label'" @remove="removeLabelFromBoard" @closeCmp="closeCmp" />
+    <delete-cmp v-else :type="'label'" @remove="removeLabelFromBoard" @closeCmp="closeCmp" @click.stop />
+  </backdrop>
 </template>
 
 <script>
 import { utilService } from "@/services/util-service";
 import listSlot from "./list-slot.vue";
 import deleteCmp from "./delete-cmp.vue";
+import backdrop from "./common/backdrop.vue";
+
 export default {
   props: {
     boardLabels: Array,
     taskLabelIds: Array,
   },
   emits: ["addLabelToTask", "addLabelToBoard", "updateBoardLabels"],
-  components: { listSlot, deleteCmp },
+  components: { listSlot, deleteCmp, backdrop },
   data() {
     return {
       labels: [],

@@ -72,6 +72,10 @@ export default {
         throw err;
       }
     },
+    loginGuest({ commit }) {
+      const user = userService.getGuestUser();
+      commit({ type: "setLoggedinUser", user });
+    },
     async loadUsers({ commit }) {
       try {
         const users = await userService.getUsers();
@@ -84,7 +88,6 @@ export default {
     async getUserById({ commit }, { userId }) {
       try {
         const user = await userService.getById(userId);
-        console.log(user);
         return JSON.parse(JSON.stringify(user));
       } catch (err) {
         console.log("userStore: Error in getUserById", err);

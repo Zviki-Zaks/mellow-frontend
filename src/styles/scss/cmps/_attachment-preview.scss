@@ -1,23 +1,20 @@
 .attachment-preview {
-    // text-align: center;
     margin-top: 10px;
     border-radius: 3px;
     display: flex;
     flex-direction: column;
-    width: 210px;
-    // height: 150px;
     background-color: white;
+    width: 306px;
     position: absolute;
-    top: 305px;
-    border: 1px solid black 0.11;
-    // padding: 1px;
-    font-size: 16px;
+    top: 260px;
+    right: 50%;
+    transform: translateX(+60%);
+    font-size: 14px;
     padding: 12px;
     z-index: 2;
     box-shadow: 0 8px 16px -4px #091e4240, 0 0 0 1px #091e4214;
-    // font-family: segoeui;
 
-    hr{
+    hr {
         margin: 12px 0;
     }
 
@@ -25,19 +22,15 @@
         text-align: center;
         color: $light-text;
         margin-top: -2px;
-        // font-weight: 500;
-
     }
 
-    .attach-link-title{
+    .attach-link-title {
         font-size: 12px;
         font-weight: 700;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+            "Helvetica Neue", sans-serif;
         color: $light-text;
-        // margin-bottom: 2px;
     }
-
-    
 }
 
 .attach-preview img {
@@ -45,8 +38,9 @@
     width: 100px;
 }
 
-.attach-input{
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+.attach-input {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+        "Helvetica Neue", sans-serif;
     height: 36px;
     margin: 3px 0 -4px;
     background-color: #fafbfc;
@@ -56,28 +50,23 @@
     padding-inline-start: 13px;
 }
 
-.attach-input:focus{
+.attach-input:focus {
     outline: 2px solid $trello-blue;
-    box-shadow:none
+    box-shadow: none;
 }
 
-// .attachment-preview hr{
-//     border-color: #091e4221;
-//     background-color: #091e4221;
-//     margin: 20px 0;
-// }
-
-.attach-link-btn{
+.attach-link-btn {
     height: 32px;
     border-radius: 3px;
     border: none;
     background-color: $clr10;
-    font-size: rem(16px);
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+        "Helvetica Neue", sans-serif;
+    font-size: 14px;
     color: $text-color;
     width: 38%;
     margin-block-start: 15px;
@@ -85,7 +74,5 @@
 }
 
 .attach-link-btn:hover {
-    color: $clr1;
-    color: $text-color;
+    background-color: $card-grey;
 }
-
