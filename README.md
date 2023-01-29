@@ -1,35 +1,11 @@
 # Mellow
 
-This template should help get you started developing with Vue 3 in Vite.
+<h3>Mellow - Final project of Coding Academy Bootcamp - trello.com-clone</h3>
 
-## Recommended IDE Setup
+This app wase built in 10 intense days, by team of 3 developers.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin).
+**Vue.js** | **Vuex** | **Sacc**
 
-## Customize configuration
+The backend repo: [Mellow-Backend](https://github.com/Zviki-Zaks/mellow-backend)
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
+[See demo](https://melloew-project-manager.onrender.com)
