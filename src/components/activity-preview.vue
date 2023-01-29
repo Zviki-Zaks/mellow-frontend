@@ -27,7 +27,7 @@ export default {
       guestUser: userService.getGuestUser(),
     };
   },
-  created() {},
+  created() { },
   computed: {
     activityTime() {
       const time = formatDistance(
@@ -48,4 +48,5 @@ export default {
 </script>
 
 <style>
+
 </style>

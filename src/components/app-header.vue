@@ -23,18 +23,9 @@
           <create-board v-if="handles.isCreateBoard" @closeCmp="openCmp" />
         </div>
         <div class="app-header-right-nav flex">
-          <router-link
-            v-if="!userIsLoggedIn"
-            class="login-btn"
-            @click="isLogin = true"
-            to="/login"
-          >Log in</router-link>
-          <router-link
-            v-if="!userIsLoggedIn"
-            class="signup-btn"
-            @click="isLogin = true"
-            to="/login"
-          >Sign up</router-link>
+          <router-link v-if="!userIsLoggedIn" class="login-btn" @click="isLogin = true" to="/login">Log in</router-link>
+          <router-link v-if="!userIsLoggedIn" class="signup-btn" @click="isLogin = true" to="/login">Sign
+            up</router-link>
           <router-link to="/login" class="header-bell pointer">
             <img src="../assets/svgs/bell.svg" />
           </router-link>
@@ -48,8 +39,6 @@
 </template>
 
 <script>
-import { storageService } from "../services/async-storage-service";
-import { userService } from "../services/user-service";
 import boardRecent from "./board-recent.vue";
 import createBoard from "./create-board.vue";
 import userAvatar from "./user-avatar.vue";
@@ -99,10 +88,6 @@ export default {
       const currUser = this.$store.getters.loggedinUser
       if (currUser) return true
     }
-
-    // getTrelloIcon(){
-    //   return new URL('../assets/svgs/trello.svg', import.meta.url)
-    // }
   },
   watch: {
     "$route.path": {
@@ -127,4 +112,5 @@ export default {
 </script>
 
 <style>
+
 </style>
