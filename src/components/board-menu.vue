@@ -1,11 +1,8 @@
 <template>
   <section class="board-menu">
     <div class="cmp-header">
-      <a
-        v-if="handles.isAbout || handles.isChangeBg || handles.isShowActivities"
-        class="back-to-cmp-btn"
-        @click="toggleMenuContent"
-      >
+      <a v-if="handles.isAbout || handles.isChangeBg || handles.isShowActivities" class="back-to-cmp-btn"
+        @click="toggleMenuContent">
         <span></span>
       </a>
       <p class="cmp-container-title">{{ cmpTitle }}</p>
@@ -15,12 +12,9 @@
     </div>
     <hr class="thin-hr" />
     <section class="menu-content">
-      <div
-        v-if="
-          !handles.isAbout && !handles.isChangeBg && !handles.isShowActivities
-        "
-        class="menu-options flex"
-      >
+      <div v-if="
+        !handles.isAbout && !handles.isChangeBg && !handles.isShowActivities
+      " class="menu-options flex">
         <div class="menu-option" @click="toggleMenuContent('isAbout')">
           <span class="trello-icon"></span>
           <div>
@@ -37,48 +31,24 @@
         <hr class="thin-hr" />
       </div>
 
-      <section
-        v-if="!handles.isAbout && !handles.isChangeBg"
-        class="menu-activities-container"
-      >
-        <p
-          v-if="!handles.isShowActivities"
-          class="activity-header"
-          @click="toggleMenuContent('isShowActivities')"
-        >
+      <section v-if="!handles.isAbout && !handles.isChangeBg" class="menu-activities-container">
+        <p v-if="!handles.isShowActivities" class="activity-header" @click="toggleMenuContent('isShowActivities')">
           Activity
         </p>
         <div class="activities-list">
-          <activity-preview
-            v-for="activity in activitiesToDisplay"
-            :key="activity.id"
-            :activity="activity"
-          />
+          <activity-preview v-for="activity in activitiesToDisplay" :key="activity.id" :activity="activity" />
         </div>
-        <a
-          v-if="!handles.isShowActivities"
-          class="show-allActivities"
-          @click="toggleMenuContent('isShowActivities')"
-          >View all activity</a
-        >
+        <a v-if="!handles.isShowActivities" class="show-allActivities"
+          @click="toggleMenuContent('isShowActivities')">View all activity</a>
       </section>
       <section v-if="handles.isChangeBg" class="change-bg-container">
-        <div
-          v-if="!bgOptions.isChangClr && !bgOptions.isChangImg"
-          class="change-bg-choose"
-        >
+        <div v-if="!bgOptions.isChangClr && !bgOptions.isChangImg" class="change-bg-choose">
           <div class="photos-colors-options flex">
-            <div
-              class="photos-option-container"
-              @click="toggleBgOption('isChangImg')"
-            >
+            <div class="photos-option-container" @click="toggleBgOption('isChangImg')">
               <img class="photos-option" src="../assets/imgs/photos.jpg" />
               <p class="photos-option-title">Photos</p>
             </div>
-            <div
-              class="colors-option-container"
-              @click="toggleBgOption('isChangClr')"
-            >
+            <div class="colors-option-container" @click="toggleBgOption('isChangClr')">
               <img class="colors-option" src="../assets/imgs/colors.jpg" />
               <p class="color-option-title">Colors</p>
             </div>
@@ -96,37 +66,18 @@
         </div>
         <div class="options-list">
           <list-slot v-if="bgOptions.isChangClr">
-            <!-- <list-slot> -->
             <template v-slot:list>
-              <div
-                v-for="bgc in bgColors"
-                :key="bgc.id"
-                class="colors-option"
-                :style="{ backgroundColor: bgc.color }"
-                @click="selectBg('bgClr', bgc.color)"
-              ></div>
+              <div v-for="bgc in bgColors" :key="bgc.id" class="colors-option" :style="{ backgroundColor: bgc.color }"
+                @click="selectBg('bgClr', bgc.color)"></div>
             </template>
           </list-slot>
           <div v-if="bgOptions.isChangImg" class="change-bg-img-screen">
-            <input
-              type="text"
-              placeholder="Search Unsplash for photos"
-              class="unsplash-search"
-              v-focus
-              v-model="search"
-              @input="waitSearch"
-            />
+            <input type="text" placeholder="Search Unsplash for photos" class="unsplash-search" v-focus v-model="search"
+              @input="waitSearch" />
             <list-slot>
-              <!-- <list-slot> -->
               <template #list>
-                <img
-                  v-for="(photo, idx) in photos"
-                  :key="idx"
-                  class="photos-option"
-                  :src="photo.urls.thumb"
-                  alt="img"
-                  @click="selectBg('bgImg', photo)"
-                />
+                <img v-for="(photo, idx) in photos" :key="idx" class="photos-option" :src="photo.urls.thumb" alt="img"
+                  @click="selectBg('bgImg', photo)" />
               </template>
             </list-slot>
           </div>
@@ -195,11 +146,9 @@ export default {
           console.log(e);
         });
     },
-
     waitSearch: _.debounce(function () {
       this.searchPhoto();
     }, 1000),
-
     toggleMenuContent(type) {
       if (this.bgOptions.isChangClr || this.bgOptions.isChangImg) {
         this.toggleBgOption();
@@ -237,7 +186,6 @@ export default {
       const activities = this.board.activities.sort((a1, a2) =>
         a1.createdAt > a2.createdAt ? -1 : 1
       );
-
       return this.handles.isShowActivities
         ? activities
         : activities.slice(0, 20);
@@ -258,6 +206,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

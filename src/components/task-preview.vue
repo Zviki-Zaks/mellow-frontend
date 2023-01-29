@@ -1,8 +1,5 @@
 <template>
-  <div
-    @click="toTaskDetails(this.boardId, this.groupId, this.task.id)"
-    class="task-preview-container"
-  >
+  <div @click="toTaskDetails(this.boardId, this.groupId, this.task.id)" class="task-preview-container">
     <div v-if="this.task.style.isFullCover" :style="fullCoverStyle" class="full-cover-selected">
       <p :class="fullCoverTxt" class="full-cover-title">{{ task.title }}</p>
     </div>
@@ -10,61 +7,29 @@
     <div v-else class="top-cover-selected">
       <div :style="coverStyle" class="task-preview-cover"></div>
 
-      <img
-        v-if="taskImgUrl && !task.style.bgClr"
-        class="top-cover-img"
-        :src="taskImgUrl"
-        alt
-        draggable="false"
-      />
+      <img v-if="taskImgUrl && !task.style.bgClr" class="top-cover-img" :src="taskImgUrl" alt draggable="false" />
       <div class="task-preview-icons">
         <div class="labels-container" v-if="task.labelIds?.length" @click.stop="showLabelTitle">
-          <div
-            v-for="label in labelsToDisplay"
-            :key="label.id"
-            class="task-preview-label"
-            :class="openLabel"
-            :style="{ backgroundColor: label.color }"
-            @click.stop="toggleLabelTitle"
-          >
+          <div v-for="label in labelsToDisplay" :key="label.id" class="task-preview-label" :class="openLabel"
+            :style="{ backgroundColor: label.color }" @click.stop="toggleLabelTitle">
             <span v-if="isLabelTitle" :class="openLabel">{{ label.title }}</span>
           </div>
         </div>
         <div class="task-content">{{ task.title }}</div>
         <div class="task-snapshot flex">
-          <div
-            class="description-img-preview"
-            v-if="task.description?.length"
-            title="Card description"
-          ></div>
-          <div
-            class="checklists-img-preview"
-            :class="{ 'todo-done': isChecklistDone }"
-            v-if="task.checklists?.length"
-            title="Checklist items"
-          >
+          <div class="description-img-preview" v-if="task.description?.length" title="Card description"></div>
+          <div class="checklists-img-preview" :class="{ 'todo-done': isChecklistDone }" v-if="task.checklists?.length"
+            title="Checklist items">
             <span class="checklist-img-font flex" :class="{ 'white': isChecklistDone }"></span>
             <span class></span>
             {{ checkListsCount }}
           </div>
-          <div
-            class="attachment-img-preview"
-            v-if="task.attachments?.length"
-            title="Attachment"
-          >{{ attachmentCount }}</div>
-          <div
-            class="date-img-preview"
-            v-if="task.dueDate?.dueDate"
-            :class="isTaskOverdue"
-          >{{ formattedDate }}</div>
+          <div class="attachment-img-preview" v-if="task.attachments?.length" title="Attachment">{{ attachmentCount }}
+          </div>
+          <div class="date-img-preview" v-if="task.dueDate?.dueDate" :class="isTaskOverdue">{{ formattedDate }}</div>
           <div class="user-avatar-pos flex">
-            <user-avatar
-              class="user-avatar"
-              :v-if="task.members?.length"
-              v-for="member in task.members"
-              :key="member._id"
-              :user="member"
-            />
+            <user-avatar class="user-avatar" :v-if="task.members?.length" v-for="member in task.members"
+              :key="member._id" :user="member" />
           </div>
         </div>
       </div>
@@ -197,6 +162,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

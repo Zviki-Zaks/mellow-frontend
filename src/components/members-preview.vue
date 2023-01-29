@@ -9,22 +9,12 @@
     <hr class="thin-hr" />
     <div class="members-container">
       <div class="input-container">
-        <input
-          v-focus
-          v-model="filterTxt"
-          class="members-filter"
-          type="text"
-          placeholder="Search Members"
-        />
+        <input v-focus v-model="filterTxt" class="members-filter" type="text" placeholder="Search Members" />
       </div>
       <h4 class="members-preview-title">Board members</h4>
       <ul class="board-members-container">
-        <li
-          class="board-member pointer"
-          v-for="(member, index) in getMembers"
-          :key="index"
-          @click="toggleMemberInTask(member)"
-        >
+        <li class="board-member pointer" v-for="(member, index) in getMembers" :key="index"
+          @click="toggleMemberInTask(member)">
           <user-avatar :user="member" />
           <div class="member-fullname">
             {{ member.fullname }}{{ `(${member.username})` }}
@@ -89,9 +79,5 @@ export default {
       deep: true,
     },
   },
-  unmounted() {},
 };
 </script>
-
-<style>
-</style>

@@ -10,7 +10,6 @@
 </template>
 
 <script>
-
 export default {
   name: "attached-img-preview",
   props: {
@@ -24,7 +23,6 @@ export default {
     makeCover() {
       this.$emit('makeCover', this.attachment)
     }
-
   }
 };
 </script>

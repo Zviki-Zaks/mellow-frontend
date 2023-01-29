@@ -6,41 +6,17 @@
       </p>
       <span class="remove-group-btn" @click="toggleRemove"></span>
     </div>
-    <delete-cmp
-      v-if="isRemove"
-      :type="'list'"
-      @remove="removeGroup"
-      @closeCmp="toggleRemove"
-    />
+    <delete-cmp v-if="isRemove" :type="'list'" @remove="removeGroup" @closeCmp="toggleRemove" />
     <div class="group-container" ref="list" :class="calcHeight">
-      <Container
-        class="tasks-container"
-        v-if="group.tasks?.length"
-        :group-name="'group'"
-        orientation="vertical"
-        :get-child-payload="getPayload(group.id)"
-        @drop="onDrop"
-      >
-        <Draggable
-          class="draggable-container middle-group-list"
-          v-for="task in group.tasks"
-          :key="task.id"
-        >
-          <task-preview
-            :task="task"
-            :groupId="group.id"
-            :isLabelTitle="isLabelTitle"
-            @toggleLabelTitle="toggleLabelTitle"
-          />
+      <Container class="tasks-container" v-if="group.tasks?.length" :group-name="'group'" orientation="vertical"
+        :get-child-payload="getPayload(group.id)" @drop="onDrop">
+        <Draggable class="draggable-container middle-group-list" v-for="task in group.tasks" :key="task.id">
+          <task-preview :task="task" :groupId="group.id" :isLabelTitle="isLabelTitle"
+            @toggleLabelTitle="toggleLabelTitle" />
         </Draggable>
       </Container>
       <div v-if="isAdding" class="add-task-container">
-        <textarea
-          v-focus
-          @blur.stop="saveIfTxt"
-          v-model="newTaskTitle"
-          placeholder="Enter a title for this card..."
-        />
+        <textarea v-focus @blur.stop="saveIfTxt" v-model="newTaskTitle" placeholder="Enter a title for this card..." />
         <div class="add-task-buttons-container flex">
           <button class="adding-task-btn btn" ref="bottom" @click="addTask">
             Add card
@@ -56,7 +32,6 @@
     </div>
   </section>
 </template>
-
 
 <script>
 import { nextTick } from "vue";
@@ -157,6 +132,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

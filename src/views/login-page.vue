@@ -14,18 +14,8 @@
       </button>
       <section class="login-form-container" v-else>
         <form class="sign-in-form" v-if="isSignIn" @submit.prevent="doLogin">
-          <input
-            class="login-form-input"
-            type="text"
-            v-model="loginCred.username"
-            placeholder="Enter username"
-          />
-          <input
-            class="login-form-input"
-            type="password"
-            v-model="loginCred.password"
-            placeholder="Enter password"
-          />
+          <input class="login-form-input" type="text" v-model="loginCred.username" placeholder="Enter username" />
+          <input class="login-form-input" type="password" v-model="loginCred.password" placeholder="Enter password" />
           <button class="login-button">Log In</button>
           <div class="or-div">OR</div>
           <button class="login-button guest" @click="guestLogin">
@@ -34,33 +24,19 @@
         </form>
 
         <form class="sign-up-form" v-if="!isSignIn" @submit.prevent="doSignup">
-          <input
-            class="login-form-input"
-            type="text"
-            v-model="signupCred.fullname"
-            placeholder="Enter your full name"
-          />
-          <input
-            class="login-form-input"
-            type="text"
-            v-model="signupCred.username"
-            placeholder="Enter username"
-          />
-          <input
-            class="login-form-input"
-            type="password"
-            v-model="signupCred.password"
-            placeholder="Enter password"
-          />
+          <input class="login-form-input" type="text" v-model="signupCred.fullname"
+            placeholder="Enter your full name" />
+          <input class="login-form-input" type="text" v-model="signupCred.username" placeholder="Enter username" />
+          <input class="login-form-input" type="password" v-model="signupCred.password" placeholder="Enter password" />
           <button class="login-button">Login</button>
         </form>
         <hr class="thin-hr" />
         <div class="signup-select-container">
-        <a class="sign-up-toggle" @click="toggleLoginSignUp"> Can't log in?</a>
-        <span class="trello-dot"></span>
-        <a class="sign-up-toggle" @click="toggleLoginSignUp">{{
-          loginSignUpButton
-        }}</a>
+          <a class="sign-up-toggle" @click="toggleLoginSignUp"> Can't log in?</a>
+          <span class="trello-dot"></span>
+          <a class="sign-up-toggle" @click="toggleLoginSignUp">{{
+            loginSignUpButton
+          }}</a>
         </div>
       </section>
     </div>

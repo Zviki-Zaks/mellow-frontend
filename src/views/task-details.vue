@@ -20,60 +20,29 @@
             <div v-if="task.members?.length" class="edit-members-container">
               <p class="members-header">Members</p>
               <div class="members-container flex">
-                <user-avatar
-                  :v-if="task.members"
-                  v-for="member in task.members"
-                  :key="member._id"
-                  :user="member"
-                />
-                <button
-                  class="avatar-btn flex"
-                  @click.stop="openCmp('isMembers')"
-                ></button>
+                <user-avatar :v-if="task.members" v-for="member in task.members" :key="member._id" :user="member" />
+                <button class="avatar-btn flex" @click.stop="openCmp('isMembers')"></button>
               </div>
             </div>
             <div v-if="labelsToDisplay?.length" class="edit-labels-container">
               <p class="labels-header">Labels</p>
               <div class="labels-container flex">
-                <div
-                  v-for="label in labelsToDisplay"
-                  :key="label.id"
-                  class="label-show flex"
-                  @click.stop="openCmp('isLabel')"
-                  :style="{ backgroundColor: label.color }"
-                >
+                <div v-for="label in labelsToDisplay" :key="label.id" class="label-show flex"
+                  @click.stop="openCmp('isLabel')" :style="{ backgroundColor: label.color }">
                   {{ label.title }}
                 </div>
-                <button
-                  class="label-show-btn flex"
-                  @click.stop="openCmp('isLabel')"
-                ></button>
+                <button class="label-show-btn flex" @click.stop="openCmp('isLabel')"></button>
               </div>
             </div>
             <div class="due-date-container" v-if="task.dueDate">
               <p class="due-date-title">Due date</p>
               <div class="displayed-date-checkbox">
-                <input
-                  type="checkbox"
-                  @click="toggleDueDateDone"
-                  class="due-date-checkbox"
-                  :src="dueDateCheckBox"
-                />
-                <div
-                  class="date-label-container flex"
-                  @click.stop="openCmp('isDatesOn')"
-                >
+                <input type="checkbox" @click="toggleDueDateDone" class="due-date-checkbox" :src="dueDateCheckBox" />
+                <div class="date-label-container flex" @click.stop="openCmp('isDatesOn')">
                   <span>{{ formattedDate }}</span>
-                  <span
-                    class="completed-overdue-label l101-label"
-                    v-if="task.dueDate.isCompleted"
-                    >Completed</span
-                  >
-                  <span
-                    class="completed-overdue-label l104-label"
-                    v-if="overdue && !task.dueDate.isCompleted"
-                    >Overdue</span
-                  >
+                  <span class="completed-overdue-label l101-label" v-if="task.dueDate.isCompleted">Completed</span>
+                  <span class="completed-overdue-label l104-label"
+                    v-if="overdue && !task.dueDate.isCompleted">Overdue</span>
                   <img src="../assets/svgs/arrow-down.svg" alt />
                 </div>
               </div>
@@ -84,10 +53,7 @@
             <div v-if="task.description" class="description-container">
               <div class="description-header-container flex">
                 <p class="description-header">Description</p>
-                <button
-                  @click="addDescription"
-                  class="edit-description-btn btn"
-                >
+                <button @click="addDescription" class="edit-description-btn btn">
                   Edit
                 </button>
               </div>
@@ -95,78 +61,43 @@
             </div>
             <div v-else class="add-edit-description-container">
               <p class="description-header">Description</p>
-              <div
-                class="fake-text-area"
-                v-if="!addingDescription"
-                @click="addDescription"
-              >
+              <div class="fake-text-area" v-if="!addingDescription" @click="addDescription">
                 Add a more detailed description...
               </div>
               <div v-else class="add-description-container">
-                <textarea
-                  v-focus
-                  v-model="newDescription"
-                  class="description-text-area"
-                  placeholder="Add a more detailed description..."
-                />
+                <textarea v-focus v-model="newDescription" class="description-text-area"
+                  placeholder="Add a more detailed description..." />
                 <div class="add-description-buttons-container flex">
-                  <button
-                    class="save-description-btn btn"
-                    @click="saveDescription"
-                  >
+                  <button class="save-description-btn btn" @click="saveDescription">
                     Save
                   </button>
-                  <button
-                    class="delete-description-btn"
-                    @click="clearForm"
-                  ></button>
+                  <button class="delete-description-btn" @click="clearForm"></button>
                 </div>
               </div>
             </div>
           </section>
 
-          <section
-            class="img-container"
-            v-if="task?.attachments?.length && task?.attachments?.length > 0"
-          >
+          <section class="img-container" v-if="task?.attachments?.length && task?.attachments?.length > 0">
             <p class="img-container-header">Attachments</p>
-            <attached-img-preview
-              v-for="(attachment, idx) in task.attachments"
-              :key="idx"
-              :attachment="attachment"
-              @makeCover="makeCover"
-              @deleteAttachment="deleteAttachment"
-            />
+            <attached-img-preview v-for="(attachment, idx) in task.attachments" :key="idx" :attachment="attachment"
+              @makeCover="makeCover" @deleteAttachment="deleteAttachment" />
           </section>
 
-          <checklist-active
-            v-if="task.checklists?.length"
-            :task="task"
-            @addTodo="addTodo"
-            @removeChecklist="removeChecklist"
-            @updateTodo="updateTodo"
-            @updateTodoDone="updateTodoDone"
-            @removeTodo="removeTodo"
-          />
+          <checklist-active v-if="task.checklists?.length" :task="task" @addTodo="addTodo"
+            @removeChecklist="removeChecklist" @updateTodo="updateTodo" @updateTodoDone="updateTodoDone"
+            @removeTodo="removeTodo" />
 
           <section class="activities">
             <div class="activity-details-header">
               <p class="activity-header">Activity</p>
-              <button
-                v-if="currBoard.activities?.length"
-                class="details-shown-btn btn"
-                @click="detailsShown = !detailsShown"
-              >
+              <button v-if="currBoard.activities?.length" class="details-shown-btn btn"
+                @click="detailsShown = !detailsShown">
                 {{ areDetailsShown }}
               </button>
             </div>
 
             <div v-if="detailsShown" class="activities-list">
-              <activity-preview
-                v-for="activity in taskActivities"
-                :key="activity.id"
-                :activity="activity"
-              />
+              <activity-preview v-for="activity in taskActivities" :key="activity.id" :activity="activity" />
             </div>
           </section>
         </div>
@@ -174,113 +105,48 @@
         <nav @click.stop class="add-task-buttons-container">
           <p class="add-task-buttons-title">Add to card</p>
           <div class="just-buttons-container">
-            <button
-              @click.stop="openCmp('isMembers')"
-              class="members-btn btn"
-              title="Members"
-            >
+            <button @click.stop="openCmp('isMembers')" class="members-btn btn" title="Members">
               Members
             </button>
-            <members-preview
-              v-if="handles.isMembers"
-              :boardMembers="currBoard.members"
-              :task="task"
-              @closeCmp="closeCmp"
-              @toggleMemberInTask="toggleMemberInTask"
-            />
-            <button
-              @click.stop="openCmp('isLabel')"
-              class="labels-btn btn"
-              title="Labels"
-            >
+            <members-preview v-if="handles.isMembers" :boardMembers="currBoard.members" :task="task"
+              @closeCmp="closeCmp" @toggleMemberInTask="toggleMemberInTask" />
+            <button @click.stop="openCmp('isLabel')" class="labels-btn btn" title="Labels">
               Labels
             </button>
-            <label-preview
-              v-if="handles.isLabel"
-              :boardLabels="currBoard.labels"
-              :taskLabelIds="task.labelIds"
-              @closeCmp="closeCmp"
-              @addLabelToTask="addLabelToTask"
-              @updateBoardLabels="updateBoardLabels"
-            />
-            <button
-              class="checklist-btn btn"
-              title="Checklist"
-              @click.stop="openCmp('isChecklist')"
-            >
+            <label-preview v-if="handles.isLabel" :boardLabels="currBoard.labels" :taskLabelIds="task.labelIds"
+              @closeCmp="closeCmp" @addLabelToTask="addLabelToTask" @updateBoardLabels="updateBoardLabels" />
+            <button class="checklist-btn btn" title="Checklist" @click.stop="openCmp('isChecklist')">
               Checklist
             </button>
-            <create-checklist
-              v-if="handles.isChecklist"
-              @closeCmp="closeCmp"
-              @createChecklist="createChecklist"
-            />
-            <button
-              @click.stop="openCmp('isDatesOn')"
-              class="dates-btn btn"
-              title="Dates"
-            >
+            <create-checklist v-if="handles.isChecklist" @closeCmp="closeCmp" @createChecklist="createChecklist" />
+            <button @click.stop="openCmp('isDatesOn')" class="dates-btn btn" title="Dates">
               Dates
             </button>
-            <date-preview
-              v-if="handles.isDatesOn"
-              :dueDate="task.dueDate?.dueDate || Date.now()"
-              @saveDate="saveDate"
-              @closeCmp="closeCmp"
-            />
-            <button
-              @click.stop="openCmp('isAttachOn')"
-              class="attachment-img btn"
-              title="Attachment"
-            >
+            <date-preview v-if="handles.isDatesOn" :dueDate="task.dueDate?.dueDate || Date.now()" @saveDate="saveDate"
+              @closeCmp="closeCmp" />
+            <button @click.stop="openCmp('isAttachOn')" class="attachment-img btn" title="Attachment">
               Attachment
             </button>
-            <attachment-preview
-              :imgUrls="imgUrls"
-              @attachImg="attachImg"
-              v-if="handles.isAttachOn"
-              @closeCmp="closeCmp"
-            />
-            <button
-              @click.stop="openCmp('isCover')"
-              class="cover-btn btn font-cmp-btn"
-              title="Cover"
-            >
+            <attachment-preview :imgUrls="imgUrls" @attachImg="attachImg" v-if="handles.isAttachOn"
+              @closeCmp="closeCmp" />
+            <button @click.stop="openCmp('isCover')" class="cover-btn btn font-cmp-btn" title="Cover">
               Cover
             </button>
 
-            <cover-unsplash
-              v-if="handles.isCover"
-              :style="task.style"
-              :title="task.title"
-              :attachments="task.attachments"
-              @closeCmp="closeCmp"
-              @addStyle="addStyle"
-            />
+            <cover-unsplash v-if="handles.isCover" :style="task.style" :title="task.title"
+              :attachments="task.attachments" @closeCmp="closeCmp" @addStyle="addStyle" />
           </div>
 
           <h3 class="td-actions">Actions</h3>
-          <a
-            @click.stop="openCmp('isDelete')"
-            class="td-delete-btn btn pointer"
-          >
+          <a @click.stop="openCmp('isDelete')" class="td-delete-btn btn pointer">
             <span class="td-delete-icon"></span>
             <span>Delete</span>
           </a>
-          <delete-cmp
-            :type="'task'"
-            @remove="removeTask('removed task')"
-            v-if="handles.isDelete"
-            @closeCmp="closeCmp"
-          />
+          <delete-cmp :type="'task'" @remove="removeTask('removed task')" v-if="handles.isDelete"
+            @closeCmp="closeCmp" />
         </nav>
       </div>
-      <img
-        class="loading-task-details"
-        v-else
-        src="../assets/loading-task.gif"
-        alt
-      />
+      <img class="loading-task-details" v-else src="../assets/loading-task.gif" alt />
     </section>
   </div>
 </template>
@@ -292,7 +158,6 @@ import datePreview from "../components/date-preview.vue";
 import labelPreview from "../components/label-preview.vue";
 import membersPreview from "../components/members-preview.vue";
 import { utilService } from "../services/util-service";
-import { useThrottledRefHistory } from "@vueuse/core";
 import coverUnsplash from "../components/cover-unsplash.vue";
 import deleteCmp from "../components/delete-cmp.vue";
 import createChecklist from "../components/create-checklist.vue";
@@ -389,7 +254,6 @@ export default {
         boardId: this.currBoard._id,
         groupId: this.currGroup.id,
         task: JSON.parse(JSON.stringify(this.task)),
-        // activity,
         changeType,
       });
       this.$emit("updateBoard", board);
@@ -632,4 +496,3 @@ export default {
   },
 };
 </script>
-

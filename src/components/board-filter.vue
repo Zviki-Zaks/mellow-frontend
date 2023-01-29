@@ -9,14 +9,8 @@
     <hr class="thin-hr" />
     <label class="filter-search-container">
       <p class="filter-section-title">Keyword</p>
-      <input
-        type="text"
-        class="search-input"
-        placeholder="Enter a keyword..."
-        v-focus
-        v-modal="filterBy.txt"
-        @input="setFilter"
-      />
+      <input type="text" class="search-input" placeholder="Enter a keyword..." v-focus v-modal="filterBy.txt"
+        @input="setFilter" />
       <p class="search-description">Search cards, members, labels, and more.</p>
     </label>
     <div class="filter-member-container">
@@ -42,6 +36,7 @@
 
 <script>
 import userAvatar from "./user-avatar.vue";
+
 export default {
   props: {
     board: Object,
@@ -69,6 +64,3 @@ export default {
   components: { userAvatar },
 };
 </script>
-
-<style>
-</style>

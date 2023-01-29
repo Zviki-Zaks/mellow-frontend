@@ -1,11 +1,7 @@
 <template>
   <section class="cmp-preview cover-unsplash-preview">
     <div class="cmp-header">
-      <a
-        class="back-to-cmp-btn"
-        v-if="searchingUnsplash"
-        @click="(searchingUnsplash = false), (searchResults = false)"
-      >
+      <a class="back-to-cmp-btn" v-if="searchingUnsplash" @click="(searchingUnsplash = false), (searchResults = false)">
         <span></span>
       </a>
       <p class="cmp-container-title">{{ pageTitle }}</p>
@@ -34,22 +30,14 @@
           <div class="dummy text"></div>
         </button>
       </div>
-      <div
-        v-if="deletable"
-        @click="removeCover"
-        class="unsplash-btn full-width-btn remove-cover pointer"
-      >Remove cover</div>
+      <div v-if="deletable" @click="removeCover" class="unsplash-btn full-width-btn remove-cover pointer">Remove cover
+      </div>
 
       <list-slot>
         <template #title>Color</template>
         <template #list>
-          <div
-            v-for="bgc in bgColors"
-            :key="bgc.id"
-            class="label-option flex pointer"
-            :style="{ backgroundColor: bgc.color }"
-            @click="selectBgClr(bgc.color)"
-          ></div>
+          <div v-for="bgc in bgColors" :key="bgc.id" class="label-option flex pointer"
+            :style="{ backgroundColor: bgc.color }" @click="selectBgClr(bgc.color)"></div>
         </template>
       </list-slot>
 
@@ -57,14 +45,8 @@
         <list-slot>
           <template #title>Attachments</template>
           <template #list>
-            <img
-              v-for="(photo, idx) in attachments?.slice(0, 6)"
-              :key="idx"
-              class="unsplash-result-small pointer"
-              :src="photo"
-              alt="img"
-              @click="applyPhoto(photo)"
-            />
+            <img v-for="(photo, idx) in attachments?.slice(0, 6)" :key="idx" class="unsplash-result-small pointer"
+              :src="photo" alt="img" @click="applyPhoto(photo)" />
           </template>
         </list-slot>
 
@@ -77,55 +59,31 @@
       <list-slot>
         <template #title>Photos from Unsplash</template>
         <template #list>
-          <img
-            v-for="photo in photos.slice(0, 6)"
-            :key="photo.id"
-            class="unsplash-result-small pointer"
-            :src="photo.urls.thumb"
-            alt="img"
-            @click="applyPhoto(photo)"
-          />
+          <img v-for="photo in photos.slice(0, 6)" :key="photo.id" class="unsplash-result-small pointer"
+            :src="photo.urls.thumb" alt="img" @click="applyPhoto(photo)" />
         </template>
       </list-slot>
 
-      <button
-        class="unsplash-btn full-width-btn pointer"
-        @click="searchingUnsplash = true"
-      >Search for photos</button>
+      <button class="unsplash-btn full-width-btn pointer" @click="searchingUnsplash = true">Search for photos</button>
     </section>
 
     <section v-if="searchingUnsplash && !searchResults" class="search-unsplash-screen">
-      <input
-        type="text"
-        placeholder="Search Unsplash for photos"
-        class="unsplash-search"
-        v-model="search"
-        @input="waitSearch"
-      />
+      <input type="text" placeholder="Search Unsplash for photos" class="unsplash-search" v-model="search"
+        @input="waitSearch" />
 
       <list-slot>
         <template #title>Suggested searches</template>
         <template #list>
-          <button
-            class="unsplash-btn pointer"
-            v-for="(term, idx) in searchTerms"
-            :key="idx"
-            @click="searchPhotoWithButton(term)"
-          >{{ term }}</button>
+          <button class="unsplash-btn pointer" v-for="(term, idx) in searchTerms" :key="idx"
+            @click="searchPhotoWithButton(term)">{{ term }}</button>
         </template>
       </list-slot>
 
       <list-slot>
         <template #title>Top photos</template>
         <template #list>
-          <img
-            v-for="photo in photos.slice(0, 12)"
-            :key="photo.id"
-            class="unsplash-result-small pointer"
-            :src="photo.urls.thumb"
-            alt="img"
-            @click="applyPhoto(photo)"
-          />
+          <img v-for="photo in photos.slice(0, 12)" :key="photo.id" class="unsplash-result-small pointer"
+            :src="photo.urls.thumb" alt="img" @click="applyPhoto(photo)" />
         </template>
       </list-slot>
     </section>
@@ -133,24 +91,16 @@
     <section v-if="searchResults" class="unsplash-results-screen">
       <list-slot>
         <template #list>
-          <img
-            v-for="photo in photos"
-            :key="photo.id"
-            class="unsplash-result-large pointer"
-            :src="photo.urls.thumb"
-            alt="img"
-            @click="applyPhoto(photo)"
-          />
+          <img v-for="photo in photos" :key="photo.id" class="unsplash-result-large pointer" :src="photo.urls.thumb"
+            alt="img" @click="applyPhoto(photo)" />
         </template>
       </list-slot>
     </section>
   </section>
 </template>
 
-
 <script>
 import listSlot from "../components/list-slot.vue";
-import { getCurrentInstance, onMounted } from "vue";
 import axios from "axios";
 import _ from "lodash";
 
@@ -209,7 +159,6 @@ export default {
     this.currTitle = this.title;
     this.searchPhoto(this.title);
   },
-
   methods: {
     searchPhoto(searchTerm) {
       const accessKey = "Y2X6Y_wdMpqvaYX_4jgO-dOBqVAsQMQpihsIFNOAX5E";
@@ -247,7 +196,6 @@ export default {
       this.search = ''
 
     }, 1000),
-
     selectBgClr(bgClr) {
       this.currStyle.bgClr = bgClr;
       this.currStyle.bgImg = "";
@@ -292,6 +240,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

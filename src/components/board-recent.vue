@@ -8,22 +8,9 @@
     </div>
     <hr class="thin-hr" />
     <div class="recent-boards-list">
-      <div
-        class="recent-board-preview flex"
-        v-for="board in boards"
-        :key="board._id"
-        @click="goToBoard(board._id)"
-      >
-        <img
-          v-if="board.style.bgImg"
-          class="recent-board-preview-img"
-          :src="board.style.bgImg.urls.thumb"
-        />
-        <img
-          v-else
-          class="recent-board-preview-img"
-          src="../assets/imgs/board.jpg"
-        />
+      <div class="recent-board-preview flex" v-for="board in boards" :key="board._id" @click="goToBoard(board._id)">
+        <img v-if="board.style.bgImg" class="recent-board-preview-img" :src="board.style.bgImg.urls.thumb" />
+        <img v-else class="recent-board-preview-img" src="../assets/imgs/board.jpg" />
         <p class="recent-board-title">{{ board.title }}</p>
       </div>
     </div>
@@ -45,6 +32,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

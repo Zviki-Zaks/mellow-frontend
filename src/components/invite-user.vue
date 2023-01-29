@@ -9,18 +9,8 @@
     <hr class="thin-hr" />
     <div class="invite-content">
       <div class="select-container">
-        <el-select
-          v-model="selected"
-          multiple
-          placeholder="Select user"
-          style="width: 100%"
-        >
-          <el-option
-            v-for="user in users"
-            :key="user._id"
-            :label="user.fullname"
-            :value="user._id"
-          />
+        <el-select v-model="selected" multiple placeholder="Select user" style="width: 100%">
+          <el-option v-for="user in users" :key="user._id" :label="user.fullname" :value="user._id" />
         </el-select>
         <button class="add-members-btn" @click="addMemberToBoard">
           Invite
@@ -42,9 +32,7 @@
 </template>
 
 <script>
-import { userService } from "../services/user-service";
 import userAvatar from "./user-avatar.vue";
-import { ref } from "vue";
 
 export default {
   name: "invite-user",
@@ -73,7 +61,5 @@ export default {
       this.$emit("addMemberToBoard", "add members", members);
     },
   },
-  computed: {},
 };
 </script>
-

@@ -5,11 +5,7 @@
       <button class="add-task-close-cmp-btn" @click="closeCmp"></button>
     </div>
     <hr class="thin-hr" />
-    <v-date-picker
-      v-model="date.dueDate"
-      mode="dateTime"
-      :minute-increment="5"
-    />
+    <v-date-picker v-model="date.dueDate" mode="dateTime" :minute-increment="5" />
     <button class="save-btn date-btn" @click="saveDate">Save</button>
     <button class="remove-date-btn date-btn" @click="closeCmp">Remove</button>
   </section>
@@ -42,6 +38,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

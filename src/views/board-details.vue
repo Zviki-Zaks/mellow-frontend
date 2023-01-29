@@ -5,87 +5,43 @@
     <header class="board-header flex">
       <div class="board-title-container flex">
         <button class="btn-board-details btn-board">Board</button>
-        <div
-          class="board-title"
-          contenteditable="true"
-          @blur="editBoard('board title', $event)"
-        >
+        <div class="board-title" contenteditable="true" @blur="editBoard('board title', $event)">
           {{ board.title }}
         </div>
-        <button
-          class="star-btn btn-board btn"
-          @click.stop="editBoard('toggle favorite')"
-        >
-          <img
-            class="star"
-            v-if="board.isFavorite"
-            src="../assets/icons/full-star.png"
-            alt
-          />
+        <button class="star-btn btn-board btn" @click.stop="editBoard('toggle favorite')">
+          <img class="star" v-if="board.isFavorite" src="../assets/icons/full-star.png" alt />
           <img class="star" v-else src="../assets/icons/empty-star.png" />
         </button>
       </div>
       <div class="members-nav-bar flex">
         <div class="board-members-container flex">
-          <user-avatar
-            :v-if="board.members"
-            v-for="member in board.members"
-            :key="member._id"
-            :user="member"
-          />
+          <user-avatar :v-if="board.members" v-for="member in board.members" :key="member._id" :user="member" />
         </div>
-        <button
-          class="invite-btn btn-board btn"
-          @click="isOpenInvite = !isOpenInvite"
-        >
+        <button class="invite-btn btn-board btn" @click="isOpenInvite = !isOpenInvite">
           Invite
         </button>
-        <invite-user
-          v-if="isOpenInvite"
-          :members="board.members"
-          @closeCmp="isOpenInvite = !isOpenInvite"
-          @addMemberToBoard="editBoard"
-        />
+        <invite-user v-if="isOpenInvite" :members="board.members" @closeCmp="isOpenInvite = !isOpenInvite"
+          @addMemberToBoard="editBoard" />
       </div>
       <nav class="board-header-nav flex">
         <!-- <button class="filter-btn btn-board btn" @click="moveToDashboard(board._id)">dashboard</button> -->
         <button class="filter-btn btn-board btn" @click="toggleFilter">
           Filter
         </button>
-        <board-filter
-          v-if="isOpenFilter"
-          :board="board"
-          @closeCmp="toggleFilter"
-          @setFilter="setFilter"
-        />
+        <board-filter v-if="isOpenFilter" :board="board" @closeCmp="toggleFilter" @setFilter="setFilter" />
         <button class="show-menu-btn btn-board btn" @click="toggleMenu">
           Show menu
         </button>
-        <board-menu
-          v-if="isOpenMenu"
-          :board="board"
-          @closeCmp="toggleMenu"
-          @editBoard="editBoard"
-          @attachImg="attachImg"
-        />
+        <board-menu v-if="isOpenMenu" :board="board" @closeCmp="toggleMenu" @editBoard="editBoard"
+          @attachImg="attachImg" />
       </nav>
     </header>
     <div class="groups-layout">
       <article class="groups-container flex">
         <Container @drop="onDrop" orientation="horizontal">
-          <Draggable
-            class="draggable-container flex"
-            v-for="group in board.groups"
-            :key="group.id"
-          >
-            <board-group
-              :group="group"
-              :isLabelTitle="isLabelTitle"
-              @dropped="dropCard"
-              @saveGroup="saveGroup"
-              @toggleLabelTitle="toggleLabelTitle"
-              @removeGroup="removeGroup"
-            />
+          <Draggable class="draggable-container flex" v-for="group in board.groups" :key="group.id">
+            <board-group :group="group" :isLabelTitle="isLabelTitle" @dropped="dropCard" @saveGroup="saveGroup"
+              @toggleLabelTitle="toggleLabelTitle" @removeGroup="removeGroup" />
           </Draggable>
         </Container>
         <div class="add-group" @click="addGroup">
@@ -98,9 +54,7 @@
 
 <script>
 import { boardService } from "../services/board-service";
-import { utilService } from "../services/util-service";
-import { userService } from "../services/user-service";
-import { eventBus, showMsg } from "../services/event-bus-service";
+import { eventBus } from "../services/event-bus-service";
 import { socketService } from "../services/socket.service";
 
 import boardGroup from "../components/board-group.vue";
@@ -109,7 +63,6 @@ import { Container, Draggable } from "vue3-smooth-dnd";
 import boardFilter from "../components/board-filter.vue";
 import boardMenu from "../components/board-menu.vue";
 import inviteUser from "../components/invite-user.vue";
-// import dashboardPreview from "../views/dashboard-preview.vue";
 
 export default {
   name: "board-details",
@@ -182,7 +135,6 @@ export default {
       this.saveDnd();
       this.dndInfo = {};
     },
-
     async loadBoard(boardId) {
       this.board = await this.$store.dispatch({ type: "loadBoard", boardId });
     },
@@ -193,8 +145,6 @@ export default {
       });
     },
     async editBoard(changeType, val) {
-      console.log(changeType);
-      console.log(val);
       try {
         this.board = await this.$store.dispatch({
           type: "editBoard",
@@ -202,7 +152,7 @@ export default {
           changeType,
           val,
         });
-      } catch (err) {}
+      } catch (err) { }
     },
     async attachImg(ev) {
       const { url } = await this.$store.dispatch({ type: "attachImg", ev });
@@ -257,9 +207,7 @@ export default {
       this.loadBoard(this.board._id);
     },
     toggleMenu() {
-      console.log("toggle");
       this.isOpenMenu = !this.isOpenMenu;
-      console.log("this.isOpenMenu", this.isOpenMenu);
     },
     moveToDashboard(boardId) {
       this.$router.push(`/${boardId}/dashboard`);
@@ -293,5 +241,3 @@ export default {
   },
 };
 </script>
-<style>
-</style>
